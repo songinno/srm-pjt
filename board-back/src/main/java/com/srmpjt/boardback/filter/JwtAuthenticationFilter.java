@@ -9,6 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.srmpjt.boardback.constants.Token;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,7 +34,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        
+        try {
+            String token = parseBearerToken(request);
+
+            if (token == null) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            String email = jwtProvider.validate(token);
+            if (email == null) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            AbstractAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(email, null, AuthorityUtils.NO_AUTHORITIES); // 이메일, 비밀번호, 권한
+            // 인증 요청에 대한 세부 정보 설정
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+            // Context에 등록
+            SecurityContext securityContext = SecurityContextHolder.createEmptyContext(); // 비어있는 Context 생성
+            securityContext.setAuthentication(authenticationToken);
+
+            SecurityContextHolder.setContext(securityContext); // 외부에서 사용할 수 있도록
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        filterChain.doFilter(request, response);
     }
 
     private String parseBearerToken(HttpServletRequest request) {
