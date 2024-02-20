@@ -10,8 +10,10 @@ interface Props {
 }
 
 /* ---------- component : Board List Item 컴포넌트 ---------- */
-export default function BoardItem({ boardListItem }: Props) {
-
+// export default function BoardItem({ boardListItem }: Props) {
+export default function BoardItem(props: Props) {
+    const {boardListItem} = props;
+    
     /* ---------- properties ---------- */
     const { boardNumber, title, content, boardTitleImage } = boardListItem;
     const { favoriteCount ,commentCount, viewCount } = boardListItem;
@@ -62,7 +64,6 @@ export default function BoardItem({ boardListItem }: Props) {
                 <div className='board-list-item-image' style={{backgroundImage: `url(${boardTitleImage})`}}></div>
             </div>
             )}
-            
         </div>
     )
 }

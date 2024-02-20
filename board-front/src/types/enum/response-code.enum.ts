@@ -1,4 +1,4 @@
-enum ResponseCode {
+const enum ResponseCode {
     // HTTP Status 200
     SUCCESS = "SU",
     // public static final 생략 가능

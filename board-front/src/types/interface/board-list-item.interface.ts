@@ -1,4 +1,4 @@
-export default interface BoardListItem {
+interface BoardListItem {
     boardNumber: number;
     title: string;
     content: string;
@@ -10,3 +10,5 @@ export default interface BoardListItem {
     writerNickname: string;
     writerProfileImage: string | null;
 }
+
+export default BoardListItem;
