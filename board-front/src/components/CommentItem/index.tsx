@@ -3,18 +3,19 @@ import './style.css';
 import { CommentListItem } from 'types/interface';
 import defaultProfileImage from 'assets/images/default_profile_image.jpg';
 
+//                  Interface: Comment List Item 컴포넌트 Properties                  //
 interface Props {
     commentListItem: CommentListItem;
 }
 
-/* ---------- component : Comment List Item 컴포넌트 ---------- */
+//                   Component : Comment List Item 컴포넌트                  //
 export default function CommentItem(props: Props) {
     const { commentListItem } = props;
 
-/* ---------- Properties ---------- */
+// Properties //
 const { nickname, profileImage, writeDatetime, content } = commentListItem;
 
-/* ---------- render : Board List Item 컴포넌트 랜더링 ---------- */
+//                  Render : Board List Item 컴포넌트 랜더링                    //
   return (
     <div className='comment-list-item'>
         <div className='comment-list-item-top'>

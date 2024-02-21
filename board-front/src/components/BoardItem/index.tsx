@@ -5,29 +5,30 @@ import { useNavigate } from 'react-router-dom';
 // 기본 프로필 이미지
 import defaultProfileImage from 'assets/images/default_profile_image.jpg';
 
+//                  Interface: Baord List Item 컴포넌트 Properties                  //
 interface Props {
     boardListItem: BoardListItem
 }
 
-/* ---------- component : Board List Item 컴포넌트 ---------- */
+//                  Component : Board List Item 컴포넌트                    //
 // export default function BoardItem({ boardListItem }: Props) {
 export default function BoardItem(props: Props) {
     const {boardListItem} = props;
     
-    /* ---------- properties ---------- */
+    // properties //
     const { boardNumber, title, content, boardTitleImage } = boardListItem;
     const { favoriteCount ,commentCount, viewCount } = boardListItem;
     const { writeDatetime, writerNickname, writerProfileImage } = boardListItem;
 
-    /* ---------- function : 네비게이트 함수 ---------- */
+    //                   Function : 네비게이트 함수                  //
     // const navigator = useNavigate();
 
-    // eventHandler : 게시물 아이템 클릭 이벤트 처리 함수
+    //                  Event Handler : 게시물 아이템 클릭 이벤트 처리 함수                     //
     const onClickHandler = () => {
         // navigator(boardNumber);
     };
 
-    /* ---------- render: Board List Item 컴포넌트 렌더링 ---------- */
+    //                  Render: Board List Item 컴포넌트 렌더링                  //
     return (
         <div className='board-list-item' onClick={onClickHandler}>
             <div className='board-list-item-main-box'>

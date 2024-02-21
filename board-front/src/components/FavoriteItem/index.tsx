@@ -3,18 +3,19 @@ import './style.css';
 import { FavoriteListItem } from 'types/interface';
 import defaultProfileImage from 'assets/images/default_profile_image.jpg';
 
+//                  Interface : Favorite List Item 컴포넌트 Propperties                   //
 interface Props {
     favoriteListItem: FavoriteListItem;
 }
 
-/* ---------- component : Favorite List Item 컴포넌트 ---------- */
+//                   Component : Favorite List Item 컴포넌트                     //
 export default function FavoriteItem(props: Props) {
     const { favoriteListItem } = props;
     
-/* ---------- Properties ---------- */
+// Properties //
     const { nickname, profileImage } = favoriteListItem;
 
-/* ---------- render : favorite list item 컴포넌트 랜더링 ---------- */
+//                  Render : favorite list item 컴포넌트 랜더링                  //
     return (
         <div className='favorite-list-item'>
             <div className='favorite-list-item-profile-box'>
