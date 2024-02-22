@@ -6,10 +6,12 @@ import Top3Item from 'components/Top3Item';
 import CommentItem from 'components/CommentItem';
 import FavoriteItem from 'components/FavoriteItem';
 import InputBox from 'components/InputBox';
+import Footer from 'layouts/Footer';
 
 function App() {
 
   const [value, setValue] = useState<string>("");
+  
   return (
     <>
       {/* {latestBoardListMock.map(board => <BoardItem key={board.boardNumber} boardListItem={board}/>)} */}
@@ -26,7 +28,9 @@ function App() {
         {favoriteListMock.map((favorite, index) => <FavoriteItem key={index} favoriteListItem={favorite}/>)}
       </div> */}
 
-      <InputBox label='이메일' type='text' placeholder='이메일 주소를 입력해주세요' value={value} error={true} setValue={setValue} message='아무것도 입력 안했다.'/>
+      {/* <InputBox label='이메일' type='text' placeholder='이메일 주소를 입력해주세요' value={value} error={true} setValue={setValue} message='아무것도 입력 안했다.'/> */}
+
+      <Footer />
 
     </>
   );

@@ -1,3 +1,4 @@
+/* * 기본 폰트 */
 @font-face {
   font-family: 'Pretendard-Regular';
   src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
@@ -5,9 +6,17 @@
   font-style: normal;
 }
 
+/* * footer 로고 텍스트 - 김해가야체 */
+@font-face {
+  font-family: 'GimhaeGayaR';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/GimhaeGayaR.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   margin: 0;
-  font-family: 'Pretendard-Regular';
+  font-family: 'Pretendard-Regular'; /* 기본 폰트 적용 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

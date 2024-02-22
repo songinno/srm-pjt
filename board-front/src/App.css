@@ -1,3 +1,15 @@
+/* * icon 상위 태그(링크 기능X) */
+.icon-box {
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* * icon 상위 태그(링크 기능 O) */
 .icon-button {
     border-radius: 50%;
     width: 24px;
@@ -14,6 +26,7 @@
     }
 }
 
+/* * icon 태그 */
 .icon {
     width: 100%;
     height: 100%;
@@ -22,14 +35,27 @@
     background-size: cover;
 }
 
+/* * icons */
 .eye-light-off-icon {
-    background-image: url(assets//images/eye-light-off.png);
+    background-image: url(assets/images/eye-light-off.png);
 }
 
 .eye-light-on-icon {
-    background-image: url(assets//images/eye-light-on.png);
+    background-image: url(assets/images/eye-light-on.png);
 }
 
 .eye-right-light-icon {
     background-image: url(assets/images/expand-right-light.png);
+}
+
+.logo-light-icon {
+    background-image: url(assets/images/logo-light.png);
+}
+
+.insta-icon {
+    background-image: url(assets/images/insta.png);
+}
+
+.naver-blog-icon {
+    background-image: url(assets/images/naver-blog.png);
 }
