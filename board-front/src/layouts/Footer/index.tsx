@@ -16,7 +16,7 @@ const onNaverBlogIconButtonClickHandler = () => {
 };
 
 
-//                  Render : Footer Layout 랜더링                   //
+//                  Render : Footer Layout 렌더링                   //
   return (
     <div id="footer">
         <div className='footer-container'>

@@ -1,3 +1,4 @@
+import { AUTH_PATH } from 'constant';
 import Footer from 'layouts/Footer';
 import Header from 'layouts/Header';
 import React from 'react';
@@ -9,12 +10,12 @@ export default function Container() {
 //                  State : 현재 페이지 pathname 상태                  //
 const { pathname } = useLocation();
 
-//                  Render : 전체 레이아웃 랜더링                   //
+//                  Render : 전체 레이아웃 렌더링                   //
   return (
     <>
         <Header />
         <Outlet />
-        {pathname !== '/auth' && (<Footer />)}
+        {pathname !== AUTH_PATH() && (<Footer />)}
     </>
   )
 }

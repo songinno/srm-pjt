@@ -1,0 +1,71 @@
+#header {
+    /* background-color: lightgray; */
+    padding: 20px 0;
+
+    /* margin: 0px auto; */
+    display: flex;
+    justify-content: center;
+}
+
+.header-container {
+    /* border: 1px solid blue; */
+
+    width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    cursor: pointer;
+}
+
+.header-logo-text {
+    color: rgba(0, 0, 0, 1);
+
+    font-family: 'Gimhaegaya';
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 140%;
+    letter-spacing: -0.4px;
+}
+
+.header-right-box {
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* * 검색 버튼 컴포넌트 */
+.header-search-input-box {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 43px;
+    padding: 0 10px 0 12px;
+
+    /* ! width, height - border, padding 고려 */
+    width: 223px; /* 247 - ((10 + 1) + (12 + 1)) = 223 */
+    height: 30; /* 32 - 1 - 1 = 30 */
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.haeder-search-input {
+    flex: 1; /* 남은 공간 차지 */
+    
+    /* input 스타일 초기화 */
+    border: none;
+    background: none;
+    outline: none;
+
+    color: rgba(0, 0, 0, 1);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 140%;
+}

@@ -15,7 +15,7 @@ export default function CommentItem(props: Props) {
 // Properties //
 const { nickname, profileImage, writeDatetime, content } = commentListItem;
 
-//                  Render : Board List Item 컴포넌트 랜더링                    //
+//                  Render : Board List Item 컴포넌트 렌더링                    //
   return (
     <div className='comment-list-item'>
         <div className='comment-list-item-top'>

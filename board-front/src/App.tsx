@@ -26,7 +26,7 @@ function App() {
 
   const [value, setValue] = useState<string>("");
   
-  //          Render : Application 컴포넌트 랜더링          //
+  //          Render : Application 컴포넌트 렌더링          //
   
   // Description : 메인 화면) 경로 - '/', 컴포넌트명 - Main //
   // Description : 로그인 + 회원가입 화면) 경로 - '/auth', 컴포넌트명 - Authentication  //

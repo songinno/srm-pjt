@@ -16,6 +16,7 @@
 
 body {
   margin: 0;
+  min-width: 1440px;
   font-family: 'Pretendard-Regular'; /* 기본 폰트 적용 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

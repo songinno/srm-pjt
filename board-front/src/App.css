@@ -1,3 +1,55 @@
+/* * 로그인 버튼 */
+.black-button {
+    border-radius: 46px;
+    width: 95px;
+    height: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 1);
+
+    color: rgba(255, 255, 255, 1);
+
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 140%;
+
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}   
+
+/* * 마이페이지 버튼 */
+.white-button {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 46px;
+    /* ! border 고려해서, 로그인 버튼에서 -2씩 */
+    width: 93px;
+    height: 28px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(255, 255, 255, 1);
+
+    color: rgba(0, 0, 0, 0.5);
+
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 140%;
+
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
 /* * icon 상위 태그(링크 기능X) */
 .icon-box {
     border-radius: 50%;
@@ -58,4 +110,12 @@
 
 .naver-blog-icon {
     background-image: url(assets/images/naver-blog.png);
+}
+
+.logo-dark-icon {
+    background-image: url(assets/images/logo-dark.png);
+}
+
+.search-light-icon {
+    background-image: url(assets/images/search-light.png);
 }

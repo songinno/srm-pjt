@@ -40,7 +40,7 @@ const onKeyDownHandler = (event:KeyboardEvent<HTMLInputElement>) => {
     onKeyDown(event);
 };
 
-//                  Render : Input Box 컴포넌트 랜더링                  //
+//                  Render : Input Box 컴포넌트 렌더링                  //
     return (
         <div className='inputbox'>
             <div className='intpubox-label'>{label}</div>

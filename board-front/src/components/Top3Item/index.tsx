@@ -25,7 +25,7 @@ export default function Top3Item(props: Props) {
     // navigator(boardNumber);
   };
 
-  //          Render : TOP 3 List Item 컴포넌트 랜더링           //
+  //          Render : TOP 3 List Item 컴포넌트 렌더링           //
   return (
     <div className='top-3-list-item' 
       style={{backgroundImage: `url(${boardTitleImage})`}}>
