@@ -21,7 +21,28 @@
     &:hover {
         opacity: 0.8;
     }
-}   
+}
+
+/* * 비활성화 버튼 */
+.disable-button {
+    border-radius: 46px;
+    width: 95px;
+    height: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0.4);
+
+    color: rgba(255, 255, 255, 1);
+
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 140%;
+
+    cursor: not-allowed;
+} 
 
 /* * 마이페이지 버튼 */
 .white-button {

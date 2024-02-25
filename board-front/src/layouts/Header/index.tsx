@@ -1,15 +1,28 @@
 import React, { ChangeEvent, useRef, useState, KeyboardEvent, useEffect } from 'react';
 import './style.css';
-import { useNavigate, useParams } from 'react-router-dom';
-import { AUTH_PATH, MAIN_PATH, SEARCH_PATH, USER_PATH } from 'constant';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { AUTH_PATH, BOARD_DETAIL_PATH, BOARD_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, SEARCH_PATH, USER_PATH } from 'constant';
 import { useCookies } from 'react-cookie';
-import { useLoginUserStore } from 'stores';
+import { useBoardStore, useLoginUserStore } from 'stores';
 
 //                  Component : Header Layout                 //
 export default function Header() {
 
   //          State : 로그인 유저 상태         //
   const { loginUser, setLoginUser, resetLoginUser  } = useLoginUserStore();
+
+  //          State : URL path 상태         //
+  const { pathname } = useLocation();
+  // console.log("pathname: " + pathname);
+  
+
+  const isMainPage = pathname === MAIN_PATH();
+  const isAuthPage = pathname.startsWith(AUTH_PATH());
+  const isSearchPage = pathname.startsWith(SEARCH_PATH(''));
+  const isUserPage = pathname.startsWith(USER_PATH(''));
+  const isBoardDetailPage = pathname.startsWith(BOARD_PATH() + "/" + BOARD_DETAIL_PATH(''));
+  const isBoardWritePage = pathname.startsWith(BOARD_PATH() + "/" +BOARD_WRITE_PATH());
+  const isBoardUpdatePage = pathname.startsWith(BOARD_PATH() + "/" +BOARD_UPDATE_PATH(''));
 
   //          State : Cookie, Login 상태         //
   const [cookies, setCookies] = useCookies();
@@ -141,6 +154,26 @@ export default function Header() {
 
   };
 
+  //          Component : 업로드 버튼 컴포넌트          //
+  const UploadButton = () => {
+
+    //          State : 게시물 상태         //
+    const { title, content, boardImageFileList, resetBoard } = useBoardStore();
+
+    //          Event handler : 업로드 버튼 클릭 이벤트 처리 함수         //
+    const onUploadButtonClickHandler = () => {
+      // TODO
+    };
+
+    //          Render : 업로드 버튼 컴포넌트 렌더링         //
+    // ! 업로드 활성화 
+    if (title && content) {
+      return (<div className='black-button' onClick={onUploadButtonClickHandler}>{'업로드'}</div>);
+    }
+    // ! 업로드 비활성화
+    return (<div className='disable-button'>{'업로드'}</div>);
+  };
+
   //          Render : Header Layout 렌더링         //
   return (
     <div id='header'>
@@ -152,8 +185,9 @@ export default function Header() {
           <div className='header-logo-text'>{'Practice Board'}</div>
         </div>
         <div className="header-right-box">
-          <SearchButton />
-          <MyPageButton />
+          {(isAuthPage || isMainPage || isSearchPage || isBoardDetailPage) && <SearchButton />}
+          {(isMainPage || isSearchPage || isBoardDetailPage || isUserPage) && <MyPageButton />}
+          {(isBoardWritePage || isBoardUpdatePage) && <UploadButton />}
         </div>
       </div>
     </div>
