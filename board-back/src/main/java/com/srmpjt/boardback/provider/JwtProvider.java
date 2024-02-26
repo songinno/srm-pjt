@@ -8,6 +8,7 @@ import com.srmpjt.boardback.prop.JwtProps;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -16,11 +17,10 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtProvider {
     // 시크릿키 가져오기
-    @Autowired
-    private JwtProps jwtProps;
-//    private String secretKey = jwtProps.getSecretKey();
+    private final JwtProps jwtProps;
 
     // ! JWT 생성
     public String create(String email) {
