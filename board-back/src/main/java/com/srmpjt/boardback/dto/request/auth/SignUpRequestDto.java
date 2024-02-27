@@ -27,6 +27,8 @@ public class SignUpRequestDto {
 
     private String addressDetail;
 
+    // TODO : profileImage는 없음
+
     @NotNull @AssertTrue
     private Boolean agreedPersonal;
 }

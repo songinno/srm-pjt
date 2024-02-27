@@ -1,6 +1,7 @@
 package com.srmpjt.boardback.entity;
 
 import com.srmpjt.boardback.entity.primaryKey.FavoritePk;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity(name = "favorite")
 @Table(name = "favorite")

@@ -3,7 +3,7 @@
     "version": "2.2.11",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -39.44442896931312,
+    "scrollTop": 0,
     "scrollLeft": -18.000000000000046,
     "zoomLevel": 0.9,
     "show": {
@@ -118,7 +118,7 @@
           },
           {
             "id": "acc3a8b0-7db8-44b3-b5de-d51d8c6540a1",
-            "name": "tell_number",
+            "name": "tel_number",
             "comment": "사용자 휴대폰번호",
             "dataType": "VARCHAR(15)",
             "default": "",
@@ -133,7 +133,7 @@
               "pk": false,
               "fk": false,
               "pfk": false,
-              "widthName": 74.998046875,
+              "widthName": 71.646484375,
               "widthComment": 109.376953125,
               "widthDataType": 83.70068359375,
               "widthDefault": 60
@@ -213,7 +213,7 @@
           "active": false,
           "left": 797.643,
           "top": 57.1072,
-          "zIndex": 2,
+          "zIndex": 9,
           "widthName": 60,
           "widthComment": 83.376953125,
           "color": "#FFD900"
