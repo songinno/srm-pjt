@@ -25,7 +25,7 @@ public class JwtProvider {
     // ! JWT 생성
     public String create(String email) {
         String secretKey = jwtProps.getSecretKey();
-        log.info("secretKey: " + secretKey);
+//        log.info("secretKey: " + secretKey);
         // 만료 기간 : 1시간
         Date expiredDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
 
