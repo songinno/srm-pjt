@@ -1,4 +1,4 @@
-/* * 로그인 버튼 */
+/* * Header - 로그인 버튼 */
 .black-button {
     border-radius: 46px;
     width: 95px;
@@ -71,7 +71,7 @@
     }
 }
 
-/* * icon 상위 태그(링크 기능X) */
+/* * 기본 icon 상위 태그(링크 기능X) */
 .icon-box {
     border-radius: 50%;
     width: 24px;
@@ -82,7 +82,7 @@
     justify-content: center;
 }
 
-/* * icon 상위 태그(링크 기능 O) */
+/* * 기본 icon 상위 태그(링크 기능 O) */
 .icon-button {
     border-radius: 50%;
     width: 24px;
@@ -99,7 +99,7 @@
     }
 }
 
-/* * icon 태그 */
+/* * 공통 icon 적용 태그 */
 .icon {
     width: 100%;
     height: 100%;
@@ -117,7 +117,7 @@
     background-image: url(assets/images/eye-light-on.png);
 }
 
-.eye-right-light-icon {
+.expand-right-light-icon {
     background-image: url(assets/images/expand-right-light.png);
 }
 
@@ -139,4 +139,47 @@
 
 .search-light-icon {
     background-image: url(assets/images/search-light.png);
+}
+
+
+/* * Auth(로그인, 회원가입) 관련 배경 이미지, 아이콘, 버튼 */
+.auth-background-image {
+    background-image: url(assets/images/auth/auth-background.png);
+}
+
+.auth-logo-icon {
+    background-image: url(assets/images/auth/auth-logo.png);
+}
+
+.auth-check-ring-light-icon {
+    background-image: url(assets/images/auth/check-ring-light.png);
+}
+
+.auth-check-round-fill-icon {
+    background-image: url(assets/images/auth/check-round-fill.png);
+}
+
+/* ! 로그인 | 회원가입 버튼 */
+.black-large-full-button {
+    border-radius: 46px;
+    
+    width: 100%;
+    height: 48px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 1);
+
+    color: rgba(255, 255, 255, 1);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 140%;
+
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.8;
+    }
 }

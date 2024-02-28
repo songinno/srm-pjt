@@ -1,0 +1,134 @@
+#auth-wrapper {
+    padding: 100px 0px 150px;
+
+    /* min-width: 1440px; */ /* # index.css에서 전체 min-width 지정해둠 */
+    /* ! height = 100vh - 헤더 높이 - 위쪽 패딩 - 아래쪽 패딩 */
+    height: calc(100vh - 68px - 100px - 150px);
+    /* min-height: 960px; */ /* TODO: max-height가 아닌가 */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background-position: center;
+    background-size: 100% 100%; /* TODO : Figma랑 비율이 안맞음, 일단 진행(cover와는 조금 다름) */
+}
+
+.auth-contianer {
+    width: 1200px;
+    height: 100%;
+
+    display: grid;
+    /* ! 7 : 5 비율 */
+    grid-template-columns: 7fr 5fr; /* # 하위 태그들(점보트론, 카드)에 별도 설정하지 않아도, 해당 비율로 맞게 들어감 */
+    column-gap: 78px;
+}
+
+.auth-jumbotron-box {
+    grid-column: 1 / 2; /* # 작성 안해도 상관 없음 */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-jumbotron-contents {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.auth-logo-icon-box {
+    width: 50px;
+    height: 50px;
+}
+
+.auth-jumbotron-text-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.auth-jumbotron-text {
+    color: rgba(255, 255, 255, 1); 
+    font-family: 'GimhaeGayaR';
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 140%;
+    letter-spacing: -1.2px;
+    text-align: center;
+}
+
+/* * 카드 공통 스타일 */
+.auth-card {
+    grid-column: 2 / 3; /* # 작성 안해도 상관 없음 */
+
+    border-radius: 10px;
+    padding: 50px 50px 30px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 4px 47px 0px rgba(0, 0, 0, 0.25);
+}
+
+.auth-card-box {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.auth-card-top {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.auth-card-title-box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.auth-card-title {
+    color: rgba(0, 0, 0, 1);
+
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 140%;
+}
+
+.auth-card-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.auth-sign-in-error-box {
+    margin-bottom: -4px;
+}
+
+.auth-sign-in-error-message {
+    color: rgba(255, 0, 0, 0.7);
+
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 140%;
+
+    white-space: pre-line; /* # pre-wrap도 가능 */
+}
+
+.auth-description-box {
+    color: rgba(0, 0, 0, 0.7);
+
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 140%;
+}
+
+.auth-description {
+    color: rgba(0, 0, 0, 1);
+    font-weight: 600;
+
+    cursor: pointer;
+}
