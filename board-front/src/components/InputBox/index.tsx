@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Dispatch, SetStateAction, forwardRef, KeyboardEvent } from 'react';
+import React, { ChangeEvent, forwardRef, KeyboardEvent } from 'react';
 import './style.css';
 
 //                  Interface : Input Box 컴포넌트 Properties                    //
@@ -8,7 +8,8 @@ interface Props {
     type: 'text' | 'password';
     placeholder: string;
     value: string;
-    setValue: Dispatch<SetStateAction<string>>; // # input의 value값(State) 변경 함수의 타입
+    // setValue: Dispatch<SetStateAction<string>>; // # onChange를 Props로 받는 것으로 수정
+    onChange: (event:ChangeEvent<HTMLInputElement>) => void;
     error: boolean;
 
     // ! 아이콘 버튼 관련
@@ -26,13 +27,7 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
 
     //                  State : properties                  //
     const { label, type, error, placeholder, value, icon, message } = props;
-    const { setValue, onButtonClick, onKeyDown } = props;
-
-    //                  Event Handler : input 값 변경 이벤트 처리 함수                   //
-    const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setValue(value);
-    };
+    const { onChange, onButtonClick, onKeyDown } = props;
 
     //                  Event Handler : input 키보드 입력 이벤트 처리 함수                  //
     const onKeyDownHandler = (event:KeyboardEvent<HTMLInputElement>) => {
@@ -45,7 +40,7 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
         <div className='inputbox'>
             <div className='intpubox-label'>{label}</div>
             <div className={error ? 'inputbox-container-error' : 'inputbox-container'}>
-                <input ref={ref} type={type} className='input' placeholder={placeholder} value={value} onChange={onChangeHandler} onKeyDown={onKeyDownHandler}/>
+                <input ref={ref} type={type} className='input' placeholder={placeholder} value={value} onChange={onChange} onKeyDown={onKeyDownHandler}/>
                 {/*  icon 버튼 */}
                 {onButtonClick !== undefined && (
                     <div className='icon-button' onClick={onButtonClick}>

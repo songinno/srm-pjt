@@ -1,12 +1,26 @@
-import React, { KeyboardEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
 import './style.css';
 import InputBox from 'components/InputBox';
+import { SignInRequestDto } from 'apis/request/auth';
+import { signInRequest, signUpRequest } from 'apis';
+import { SignInResponseDto } from 'apis/response/auth';
+import { ResponseDto } from 'apis/response';
+import { ResponseCode } from 'types/enum';
+import { useCookies } from 'react-cookie';
+import { MAIN_PATH } from 'constant';
+import { useNavigate } from 'react-router-dom';
 
 //                  Component : 인증 화면 컴포넌트                   //
 export default function Authentication() {
 
   //          State : 인증 화면 상태          //
   const [ authView, setAuthView ] = useState<'sign-in' | 'sign-up'>('sign-in');
+
+  //          State : 쿠키 상태         //
+  const [ cookie, setCookie ] = useCookies();
+
+  //          Function : 네비게이터 함수          //
+  const navigator = useNavigate();
 
   //          Component : 로그인 카드 컴포넌트         //
   const SignInCard = () => {
@@ -41,9 +55,69 @@ export default function Authentication() {
       });
     };
 
+    //          Function : SignInResponse 처리 함수         //
+    const signInResponse = (responseBody: SignInResponseDto | ResponseDto | null) => {
+      // ! 응답 객체가 null인 경우
+      if (!responseBody) { // # null이 오는 경우는 backend 서버가 안켜지거나, 도메인이 잘못되었거나 등
+        alert('네트워크 이상입니다.');
+        return;
+      }
+      
+      // ! 응답 코드에 따른 처리
+      const { code } = responseBody;
+      switch (code) {
+        case ResponseCode.SUCCESS:
+          break;
+        case ResponseCode.DATABASE_ERROR:
+          alert('데이터베이스 오류입니다.');
+          return;
+        case ResponseCode.SIGN_IN_FAIL:
+        case ResponseCode.VALIDATION_FAILED:
+          setIsError(true);
+          return;
+        default:
+          alert('식별되지 않는 코드 - ' + code);
+          return;
+      }
+
+      // ! 토큰을 이용한 쿠키 설정
+      const { token, expirationTime } = responseBody as SignInResponseDto;
+      const now = new Date().getTime();
+      const expires = new Date(now + expirationTime * 1000); // # 지금으로부터 1시간
+
+      setCookie('accessToken', token, {expires, path: MAIN_PATH()});
+      navigator(MAIN_PATH());
+    };
+
+    // TODO : 이메일과 비밀번호 분리하지 않고, input에 name 속성을 부여하여 작성하는 아이디어
+    //          Event Handler : 이메일 입력값 변경 이벤트 처리          //
+    const onEmailValueChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      // ! 작성하는 동안에는 error 상태가 아니도록 처리
+      setIsError(false);
+      // ! 이메일 입력값 State 업데이트
+      const { value } = event.target;
+      setEmailValue(value);
+    };
+    
+    //          Event Handler : 비밀번호 입력값 변경 이벤트 처리          //
+    const onPasswordValueChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      // ! 작성하는 동안에는 error 상태가 아니도록 처리
+      setIsError(false);
+      // ! 비밀번호 입력값 State 업데이트
+      const { value } = event.target;
+      setPasswordValue(value);
+    };
+
     //          Event Handler : 로그인 버튼 클릭 이벤트 처리 함수         //
     const onSignInButtonClickHandler = () => {
-      // TODO : 로그인 기능 구현 필요
+      // ! RequestBody 생성
+      const requestBody: SignInRequestDto = {
+        email: emailValue,
+        password: passwordValue
+      };
+      
+      // ! 요청 및 응답 처리
+      signInRequest(requestBody).then(signInResponse);
     };
 
     //          Event Handler : 회원가입 링크 클릭 이벤트 처리 함수         //
@@ -76,13 +150,13 @@ export default function Authentication() {
             <InputBox 
               ref={emailInputBoxRef}
               label='이메일 주소' type='text' placeholder='이메일 주소를 입력해주세요' 
-              value={emailValue} setValue={setEmailValue} error={isError}
+              value={emailValue} onChange={onEmailValueChangeHandler} error={isError}
               onKeyDown={onEmailInputBoxKeyDownHandler}
             />
             <InputBox 
               ref={passwordInputBoxRef}
               label='비밀번호' type={passwordView} placeholder='비밀번호를 입력해주세요'
-              value={passwordValue} setValue={setPasswordValue} error={isError}
+              value={passwordValue} onChange={onPasswordValueChangeHandler} error={isError}
               onKeyDown={onPasswordInputBoxKeyDownHandler} icon={passwordViewIcon} onButtonClick={onPasswordViewIconClickHandler}
             />
           </div>

@@ -35,6 +35,7 @@ public class AuthServiceImpl implements AuthService {
 
         try {
             // ! 중복 검사
+            // TODO : UserEntity에서 @Column 애너테이션으로 처리해도
             String email = dto.getEmail();
             boolean emailExists = userRepository.existsByEmail(email);
 
