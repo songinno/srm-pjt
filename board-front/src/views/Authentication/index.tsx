@@ -1,14 +1,5 @@
-import React, { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
+import React, {  useState } from 'react';
 import './style.css';
-import InputBox from 'components/InputBox';
-import { SignInRequestDto } from 'apis/request/auth';
-import { signInRequest, signUpRequest } from 'apis';
-import { SignInResponseDto } from 'apis/response/auth';
-import { ResponseDto } from 'apis/response';
-import { ResponseCode } from 'types/enum';
-import { useCookies } from 'react-cookie';
-import { MAIN_PATH } from 'constant';
-import { useNavigate } from 'react-router-dom';
 import { SignInCard } from './SignInCard';
 import { SignUpCard } from './SignUpCard';
 
@@ -33,7 +24,7 @@ export default function Authentication() {
             </div>
           </div>
         </div>
-        { (authView === 'sign-in') ? <SignInCard setAuthView={setAuthView} /> : <SignUpCard /> }
+        { (authView === 'sign-in') ? <SignInCard setAuthView={setAuthView} /> : <SignUpCard setAuthView={setAuthView} /> }
       </div>
     </div>
   )

@@ -1,0 +1,8 @@
+{
+    "response-message": {
+        "Duplicate email.": "중복된 이메일입니다.",
+        "Duplicate nickname.": "중복된 닉네임입니다.",
+        "Duplicate telephone number.": "중복된 핸드폰 번호입니다.",
+        "Unidentified code.": "식별되지 않은 코드입니다."
+    }
+}

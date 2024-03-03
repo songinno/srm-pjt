@@ -4,7 +4,7 @@
     /* min-width: 1440px; */ /* # index.css에서 전체 min-width 지정해둠 */
     /* ! height = 100vh - 헤더 높이 - 위쪽 패딩 - 아래쪽 패딩 */
     height: calc(100vh - 68px - 100px - 150px);
-    /* min-height: 960px; */ /* TODO: max-height가 아닌가 */
+    min-height: 960px; /* TODO: max-height가 아닌가 */
 
     display: flex;
     justify-content: center;
@@ -132,3 +132,72 @@
 
     cursor: pointer;
 }
+
+/* * 회원가입 카드 스타일 */
+.auth-card-page {
+    color: rgba(0, 0, 0, 1);
+
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 140%;
+}
+
+.auth-consent-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    width: fit-content;
+
+    border: 1px solid rgba(255, 255, 255, 1);
+}
+
+@keyframes blink-effect {
+    50% {
+        border: 1px dashed rgba(255, 255, 255, 1);
+    }
+}
+
+.auth-consent-box-blink {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    width: fit-content;
+
+    border: 1px dashed rgba(255, 0, 0, 1);
+
+    animation: blink-effect 1s;
+    animation-iteration-count: 5;
+}
+
+.auth-check-box {
+  
+}
+
+.auth-consent-title {
+    color: rgba(0, 0, 0, 0.7);
+
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 140%;
+}
+
+.auth-consent-title-error {
+    color: rgba(255, 0, 0, 0.7);
+
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 140%;
+}
+
+.auth-consent-link {
+    color: rgba(0, 0, 0, 1);
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 140%;
+
+    cursor: pointer;
+}
+

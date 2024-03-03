@@ -1,4 +1,4 @@
-import React, { ChangeEvent, forwardRef, KeyboardEvent, MouseEvent, MouseEventHandler } from 'react';
+import React, { ChangeEvent, forwardRef, KeyboardEvent, MouseEvent } from 'react';
 import './style.css';
 import { InputName } from 'views/Authentication/SignUpCard';
 
@@ -11,7 +11,7 @@ interface Props {
     value: string;
     // setValue: Dispatch<SetStateAction<string>>; // # onChange를 Props로 받는 것으로 수정
     onChange: (event:ChangeEvent<HTMLInputElement>) => void;
-    error: boolean;
+    error?: boolean;
     message?: string;
 
     // ! 아이콘 버튼 관련
@@ -39,6 +39,8 @@ const InputBox = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
         if (!onKeyDown) return;
         onKeyDown(event);
     };
+
+
 
     //                  Render : Input Box 컴포넌트 렌더링                  //
     return (

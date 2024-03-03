@@ -54,7 +54,7 @@ export const SignInCard = (props: Props) => {
         });
     };
 
-    //          Function : SignInResponse 처리 함수         //
+    //          Function : Sign In Response 처리 함수         //
     const signInResponse = (responseBody: SignInResponseDto | ResponseDto | null) => {
         // ! 응답 객체가 null인 경우
         if (!responseBody) { // # null이 오는 경우는 backend 서버가 안켜지거나, 도메인이 잘못되었거나 등
