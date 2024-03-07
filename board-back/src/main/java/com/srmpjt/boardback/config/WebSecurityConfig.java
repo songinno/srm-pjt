@@ -30,18 +30,25 @@ public class WebSecurityConfig {
     @Bean
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors().and() // CORS 정책 (CorsConfig.java에서 벼롣 처리)
-                .csrf().disable() // CSRF
-                .httpBasic().disable() // 기본 로그인창 없애기
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and() // 세션 기반 인증 사용X
+                // ! CORS 정책 (CorsConfig.java에서 별도 처리)
+                .cors().and()
+                // ! CSRF
+                .csrf().disable()
+                // ! 기본 로그인창 없애기
+                .httpBasic().disable()
+                // ! 세션 기반 인증 사용X
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                // ! 인증 및 인가 관련 설정
                 .authorizeRequests()
-                    // 지정한 패턴에 매칭되는 것들은 모두 허용(인증X)
+                    // # 지정한 패턴에 매칭되는 것들은 모두 허용(인증X)
                     // -> API 명세서에서 Header에 Authrization이 없는 것들을 설정 + file
                     .antMatchers("/", "/api/v1/auth/**", "/api/v1/search/**", "/file/**").permitAll()
                     .antMatchers(HttpMethod.GET, "/api/v1/board/**", "/api/v1/user/*").permitAll()
-                    .anyRequest().authenticated().and() // 지정하지 않은 매핑에 대해 모두 인증을 거치도록 설정
-                    .exceptionHandling().authenticationEntryPoint(new FailedAuthenticationEntryPoint()); // 인증 실패한 경우 적용
-
+                    .anyRequest().authenticated().and() // # 지정하지 않은 나머지 매핑에 대해 모두 인증을 거치도록 설정
+                    // # 인증 및 인가 오류 설정 (인가는 front-end에서 처리)
+                    .exceptionHandling()
+                        .authenticationEntryPoint(new FailedAuthenticationEntryPoint()); // # 인증 실패한 경우 적용
+        // ! Filter 적용
         httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();

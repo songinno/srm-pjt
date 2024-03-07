@@ -20,4 +20,10 @@ public class ImageEntity {
     private int boardNumber;
 
     private String image;
+
+    // * BoardService - 게시물 작성 시, 첨부 파일 등록을 위한 생성자
+    public ImageEntity(int boardNumber, String image) {
+        this.boardNumber = boardNumber;
+        this.image = image;
+    }
 }
