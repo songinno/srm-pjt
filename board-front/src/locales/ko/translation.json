@@ -1,8 +1,20 @@
 {
+    "general-message": {
+        "Cookie does not exist.": "쿠키가 존재하지 않습니다."
+    },
+
     "response-message": {
+        "Validation failed.": "유효성 검사 오류입니다.",
         "Duplicate email.": "중복된 이메일입니다.",
         "Duplicate nickname.": "중복된 닉네임입니다.",
         "Duplicate telephone number.": "중복된 핸드폰 번호입니다.",
+        "This user does not exist.": "등록되지 않는 사용자입니다.",
+        "This board does not exist.": "존재하지 않는 게시물입니다.",
+        "Login information mismatch.": "로그인 정보가 일치하지 않습니다.",
+        "Authorization failed.": "인증에 실패했습니다.",
+        "Do not have permission.": "접근 권한이 없습니다.",
+        "Database error.": "데이터베이스 오류가 발생했습니다.",
+
         "Unidentified code.": "식별되지 않은 코드입니다."
     }
 }

@@ -51,7 +51,6 @@ function App() {
 
     const loginUser: UserType = { ...responseBody as GetSignInUserResponseDto  };
     setLoginUser(loginUser);
-
   };
 
   //          Effect : Access 토큰 쿠키 값이 변경될 때 마다 실행되는 함수         //

@@ -4,6 +4,12 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AUTH_PATH, BOARD_DETAIL_PATH, BOARD_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, SEARCH_PATH, USER_PATH } from 'constant';
 import { useCookies } from 'react-cookie';
 import { useBoardStore, useLoginUserStore } from 'stores';
+import { fileUploadRequest, postBoardRequest } from 'apis';
+import { PostBoardRequestDto } from 'apis/request/board';
+import { PostBoardResponseDto } from 'apis/response/board';
+import { ResponseDto } from 'apis/response';
+import { ResponseCode } from 'types/enum';
+import { useTranslation } from 'react-i18next';
 
 //                  Component : Header Layout                 //
 export default function Header() {
@@ -170,9 +176,68 @@ export default function Header() {
     //          State : 게시물 상태         //
     const { title, content, boardImageFileList, resetBoard } = useBoardStore();
 
-    //          Event handler : 업로드 버튼 클릭 이벤트 처리 함수         //
-    const onUploadButtonClickHandler = () => {
-      // TODO
+    //          Function : 번역 함수          //
+    const { t } = useTranslation();
+
+    //          Function : 게시물 등록 Response 처리 함수         //
+    const postBoardResponse = (responseBody: PostBoardResponseDto | ResponseDto | null) => {
+      if (!responseBody) return;
+
+      const { code, message } = responseBody;
+
+      switch (code) {
+        case ResponseCode.SUCCESS:
+          break;
+
+        case ResponseCode.AUTHORIZATION_FAIL:
+        case ResponseCode.NOT_EXISTED_USER:
+          alert(t(`response-message.${message}`));
+          navigate(AUTH_PATH());
+          return;
+
+        case ResponseCode.VALIDATION_FAILED:
+        case ResponseCode.DATABASE_ERROR:
+          alert(t(`response-message.${message}`));
+          return;
+        default:
+          alert(t(`response-message.Unidentified code.`) + code);
+          return;
+      }
+
+      // ! 등록 완료 후
+      resetBoard();
+
+      if (!loginUser) return;
+      const { email } = loginUser;
+      navigate(USER_PATH(email));
+    };
+
+
+    //          Event handler : 업로드 버튼 클릭 이벤트 처리         //
+    const onUploadButtonClickHandler = async () => {
+      
+      const accessToken = cookies.accessToken;
+      if (!accessToken) return;
+
+      const boardImageList: string[] = [];
+
+      // * 파일 업로드 요청 보내기
+      for (const file of boardImageFileList) { // # 비동기 처리를 위해 for-of 사용 (forEach()는 안됨)
+        const data = new FormData(); // # FormData() 객체로 생성
+        data.append('file', file);
+
+        // ! 파일 업로드 요청
+        const url = await fileUploadRequest(data);
+        if (url) boardImageList.push(url);
+      }
+      
+      // * 게시물 등록 요청 보내기
+      const requestBody: PostBoardRequestDto = {
+        title, content, boardImageList
+      };
+
+      postBoardRequest(requestBody, accessToken)
+        .then(postBoardResponse);
     };
 
     //          Render : 업로드 버튼 컴포넌트 렌더링         //
