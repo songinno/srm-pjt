@@ -15,7 +15,7 @@ export default function Header() {
   const { pathname } = useLocation();
   // console.log("pathname: " + pathname);
   
-
+  // TODO : useEffect로 확인해보기
   const isMainPage = pathname === MAIN_PATH();
   const isAuthPage = pathname.startsWith(AUTH_PATH());
   const isSearchPage = pathname.startsWith(SEARCH_PATH(''));
@@ -24,8 +24,13 @@ export default function Header() {
   const isBoardWritePage = pathname.startsWith(BOARD_PATH() + "/" +BOARD_WRITE_PATH());
   const isBoardUpdatePage = pathname.startsWith(BOARD_PATH() + "/" +BOARD_UPDATE_PATH(''));
 
+  //          Effect : 로그인 유저 상태 변경 시 마다 실행되는 함수          //
+  useEffect(() => {
+    setIsLogin(loginUser !== null);
+  }, [loginUser]);
+
   //          State : Cookie, Login 상태         //
-  const [cookies, setCookies] = useCookies();
+  const [cookies, setCookies, removeCookies ] = useCookies();
   const [isLogin, setIsLogin] = useState<boolean>(false);
 
   //          Function : 네비게이트 함수          //
@@ -139,7 +144,12 @@ export default function Header() {
 
     //          Event handler : 로그아웃 버튼 클릭 이벤트 처리 함수         //
     const onSignOutButtonClickHandler = () => {
+      // ! 로그인 유저 전역 State 정보 삭제
       resetLoginUser();
+      // ! 쿠키 삭제 (둘 다 됨)
+      // setCookies('accessToken', '', { path: MAIN_PATH(), expires: new Date() })
+      removeCookies('accessToken', {path: '/'});
+      
       navigate(MAIN_PATH());
     };
 

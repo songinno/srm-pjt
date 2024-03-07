@@ -1,3 +1,8 @@
+.divider {
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
 /* * Header - 로그인 버튼 */
 .black-button {
     border-radius: 46px;
@@ -108,7 +113,7 @@
     background-size: cover;
 }
 
-/* * icons */
+/* *                 모든 아이콘                  */
 .eye-light-off-icon {
     background-image: url(assets/images/eye-light-off.png);
 }
@@ -141,12 +146,7 @@
     background-image: url(assets/images/search-light.png);
 }
 
-
-/* * Auth(로그인, 회원가입) 관련 배경 이미지, 아이콘, 버튼 */
-.auth-background-image {
-    background-image: url(assets/images/auth/auth-background.png);
-}
-
+/* ! Auth 관련 아이콘 */
 .auth-logo-icon {
     background-image: url(assets/images/auth/auth-logo.png);
 }
@@ -157,6 +157,22 @@
 
 .auth-check-round-fill-icon {
     background-image: url(assets/images/auth/check-round-fill.png);
+}
+
+/* ! Board 관련 아이콘 */
+.image-box-light-icon {
+    background-image: url(assets/images/board/image-box-light.png);
+}
+
+.close-icon {
+    background-image: url(assets/images/board/close.png);
+}
+
+
+
+/* * Auth(로그인, 회원가입) */
+.auth-background-image {
+    background-image: url(assets/images/auth/auth-background.png);
 }
 
 /* ! 로그인 | 회원가입 버튼 */

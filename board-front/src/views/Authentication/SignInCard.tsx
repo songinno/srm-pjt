@@ -88,7 +88,6 @@ export const SignInCard = (props: Props) => {
         navigator(MAIN_PATH());
     };
 
-    // TODO : 이메일과 비밀번호 분리하지 않고, input에 name 속성을 부여하여 작성하는 아이디어
     //          Event Handler : 이메일 입력값 변경 이벤트 처리          //
     const onEmailValueChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         // ! 작성하는 동안에는 error 상태가 아니도록 처리

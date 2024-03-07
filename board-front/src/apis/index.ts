@@ -2,7 +2,10 @@ import axios from 'axios';
 import { SignInRequestDto, SignUpRequestDto } from './request/auth';
 import { SignInResponseDto, SignUpResponseDto } from './response/auth';
 import { ResponseDto } from './response';
+import { GetSignInUserResponseDto } from './response/user';
 
+
+// * 로그인 및 회원가입 요청 //
 const DOMAIN = 'http://localhost:4000';
 
 const API_DOMAIN = `${DOMAIN}/api/v1`;
@@ -41,6 +44,22 @@ export const signUpRequest: (arg: SignUpRequestDto) => Promise<ResponseDto | Sig
     return result;
 };
 
-// export const signUpRequest = (requestBody: SignUpRequestDto) => {
+// * 로그인 유저 정보 요청 //
+const GET_SIGN_IN_USER_URL = () => `${API_DOMAIN}/user`;
 
-// };
+const authorization = (accessToken: string) => {
+    return { headers: {Authorization: `Bearer ${accessToken}`} }
+};
+
+export const getSignInUserRequest = async (accessToken: string) => {
+    const result = await axios.get(GET_SIGN_IN_USER_URL(), authorization(accessToken))
+        .then(response => {
+            const responseBody: GetSignInUserResponseDto = response.data;
+            return responseBody;
+        }).catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        });
+    return result;
+};
