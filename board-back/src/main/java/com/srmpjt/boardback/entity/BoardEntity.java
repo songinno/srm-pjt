@@ -35,9 +35,8 @@ public class BoardEntity {
 
     private String writerEmail;
 
+    // * BoardServiceImpl - 게시글 작성을 위한 생성자
     public BoardEntity(PostBoardRequestDto dto, String email) {
-
-        // * BoardServiceImpl - 게시글 작성을 위한 생성자
         // ! 현재 시간 (format : yyyy-MM-dd HH:mm:ss)
         Date now = Date.from(Instant.now());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -51,4 +50,10 @@ public class BoardEntity {
         this.viewCount = 0;
         this.writerEmail = email;
     }
+
+    // * 조회수 카운트업 메서드
+    public void boardViewCountUp() {
+        this.viewCount++;
+    }
+
 }

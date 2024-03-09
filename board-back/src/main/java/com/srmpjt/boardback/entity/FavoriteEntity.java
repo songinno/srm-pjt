@@ -24,4 +24,7 @@ public class FavoriteEntity {
 
     @Id
     private int boardNumber;
+
+    // * BoardService - 좋아요 기능 구현을 위한 생성자
+
 }

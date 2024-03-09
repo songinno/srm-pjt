@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
         try {
 
             Optional<UserEntity> ou = userRepository.findByEmail(email);
-            if (ou.isEmpty()) return GetSignInUserResponseDto.notExistUser();
+            if (ou.isEmpty()) return GetSignInUserResponseDto.noExistUser();
 
             userEntity = ou.get();
 

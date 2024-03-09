@@ -8,7 +8,7 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-@Getter @Setter
+@Getter
 public class SignInResponseDto extends ResponseDto {
     private String token;
     private int expirationTime;
