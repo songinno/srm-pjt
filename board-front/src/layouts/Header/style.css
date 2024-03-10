@@ -58,11 +58,6 @@
 
 .haeder-search-input {
     flex: 1; /* 남은 공간 차지 */
-    
-    /* input 스타일 초기화 */
-    border: none;
-    background: none;
-    outline: none;
 
     color: rgba(0, 0, 0, 1);
     font-size: 14px;

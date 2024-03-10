@@ -1,9 +1,8 @@
 package com.srmpjt.boardback.service;
 
 import com.srmpjt.boardback.dto.request.board.PostBoardRequestDto;
-import com.srmpjt.boardback.dto.response.board.GetBoardResponseDto;
-import com.srmpjt.boardback.dto.response.board.PostBoardResponseDto;
-import com.srmpjt.boardback.dto.response.board.PutFavoriteResponseDto;
+import com.srmpjt.boardback.dto.request.board.PostCommentRequestDto;
+import com.srmpjt.boardback.dto.response.board.*;
 import org.springframework.http.ResponseEntity;
 
 public interface BoardService {
@@ -15,5 +14,15 @@ public interface BoardService {
 
     // * 좋아요 기능
     ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String email);
+
+    // * 좋아요 리스트
+    ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(Integer boardNumber);
+
+    // * 댓글 작성
+    ResponseEntity<? super PostCommentResponseDto> postComment(PostCommentRequestDto dto, Integer boardNumber, String email);
+
+    // * 댓글 리스트
+    ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardNumber);
+
 
 }

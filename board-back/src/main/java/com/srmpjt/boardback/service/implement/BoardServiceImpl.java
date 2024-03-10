@@ -1,18 +1,18 @@
 package com.srmpjt.boardback.service.implement;
 
+import com.srmpjt.boardback.dto.object.CommentListItem;
 import com.srmpjt.boardback.dto.request.board.PostBoardRequestDto;
+import com.srmpjt.boardback.dto.request.board.PostCommentRequestDto;
 import com.srmpjt.boardback.dto.response.ResponseDto;
-import com.srmpjt.boardback.dto.response.board.GetBoardResponseDto;
-import com.srmpjt.boardback.dto.response.board.PostBoardResponseDto;
-import com.srmpjt.boardback.dto.response.board.PutFavoriteResponseDto;
+import com.srmpjt.boardback.dto.response.board.*;
 import com.srmpjt.boardback.entity.BoardEntity;
+import com.srmpjt.boardback.entity.CommentEntity;
 import com.srmpjt.boardback.entity.FavoriteEntity;
 import com.srmpjt.boardback.entity.ImageEntity;
-import com.srmpjt.boardback.repository.BoardRepository;
-import com.srmpjt.boardback.repository.FavoriteRepository;
-import com.srmpjt.boardback.repository.ImageRepository;
-import com.srmpjt.boardback.repository.UserRepository;
+import com.srmpjt.boardback.repository.*;
 import com.srmpjt.boardback.repository.resultSet.GetBoardResultSet;
+import com.srmpjt.boardback.repository.resultSet.GetCommentListResultSet;
+import com.srmpjt.boardback.repository.resultSet.GetFavoriteListResultSet;
 import com.srmpjt.boardback.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -36,6 +37,9 @@ public class BoardServiceImpl implements BoardService {
 
     private final FavoriteRepository favoriteRepository;
 
+    private final CommentRepository commentRepository;
+
+    // * 게시물 등록
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
         try {
@@ -69,6 +73,7 @@ public class BoardServiceImpl implements BoardService {
         return PostBoardResponseDto.success();
     }
 
+    // * 게시물 조회
     @Override
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
 
@@ -85,9 +90,12 @@ public class BoardServiceImpl implements BoardService {
             imageEntityList = imageRepository.findByBoardNumber(boardNumber);
 
             // ! 조회수 카운트업
-            BoardEntity board = boardRepository.findByBoardNumber(boardNumber);
-            board.boardViewCountUp();
-            boardRepository.save(board);
+            Optional<BoardEntity> ob = boardRepository.findByBoardNumber(boardNumber);
+            if (ob.isEmpty()) return GetBoardResponseDto.noExistBoard();
+
+            BoardEntity boardEntity = ob.get();
+            boardEntity.boardViewCountUp();
+            boardRepository.save(boardEntity);
             // # BoardRepository에서 Native Query로 UPDATE 쿼리문을 실행해도 O
 
         } catch (Exception e) {
@@ -98,8 +106,11 @@ public class BoardServiceImpl implements BoardService {
         return GetBoardResponseDto.success(resultSet, imageEntityList);
     }
 
+    // * 좋아요 기능
     @Override
     public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String email) {
+
+        FavoriteEntity favoriteEntity = null;
 
         try {
             // ! 유저 확인
@@ -107,18 +118,24 @@ public class BoardServiceImpl implements BoardService {
             if (!userExists) return PutFavoriteResponseDto.noExistUser();
 
             // ! 게시물 가져오기
-            boolean boardExists = boardRepository.existsByBoardNumber(boardNumber);
-            if (!boardExists) return PutFavoriteResponseDto.noExistBoard();
+            Optional<BoardEntity> ob = boardRepository.findByBoardNumber(boardNumber);
+            if (ob.isEmpty()) return PutFavoriteResponseDto.noExistBoard();
 
-            // ! FavoriteEntity 가져오기
-            FavoriteEntity favoriteEntity = favoriteRepository.findByBoardNumberAndUserEmail(boardNumber, email);
-            System.out.println("favoriteEntity = " + favoriteEntity);
-            if (favoriteEntity == null) {
-                FavoriteEntity newFavoriteEntity = new FavoriteEntity(email, boardNumber);
-                favoriteRepository.save(newFavoriteEntity);
+            BoardEntity boardEntity = ob.get();
+
+            // ! FavoriteEntity 가져오기 및 좋아요 기능 로직
+            Optional<FavoriteEntity> of = favoriteRepository.findByBoardNumberAndUserEmail(boardNumber, email);
+            if (of.isEmpty()) {
+                favoriteEntity = new FavoriteEntity(email, boardNumber);
+                favoriteRepository.save(favoriteEntity);
+                boardEntity.favoriteCountUp();
             } else {
+                favoriteEntity = of.get();
                 favoriteRepository.delete(favoriteEntity);
+                boardEntity.favoriteCountDown();
             }
+            boardRepository.save(boardEntity);
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,6 +143,78 @@ public class BoardServiceImpl implements BoardService {
         }
 
         return PutFavoriteResponseDto.success();
+
+    }
+
+    // * 좋아요 리스트
+    @Override
+    public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(Integer boardNumber) {
+
+        List<GetFavoriteListResultSet> resultSetList = new ArrayList<>();
+
+        try {
+            boolean boardExsits = boardRepository.existsByBoardNumber(boardNumber);
+            if (!boardExsits) return GetFavoriteListResponseDto.noExsitBoard();
+
+            resultSetList = boardRepository.getFavoriteList(boardNumber);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetFavoriteListResponseDto.success(resultSetList);
+    }
+
+    // * 댓글 작성
+    @Override
+    public ResponseEntity<? super PostCommentResponseDto> postComment(PostCommentRequestDto dto, Integer boardNumber, String email) {
+        try {
+
+            // ! 게시물
+            Optional<BoardEntity> ob = boardRepository.findByBoardNumber(boardNumber);
+            if (ob.isEmpty()) return PostCommentResponseDto.noExistBoard();
+
+            // ! 댓글 수 카운트 업
+            BoardEntity boardEntity = ob.get();
+            boardEntity.commentViewCountUp();
+            boardRepository.save(boardEntity);
+
+            // ! 유저 확인
+            boolean userExists = userRepository.existsByEmail(email);
+            if (!userExists) return PostCommentResponseDto.noExsitUser();
+
+            // ! Comment Entity 생성 및 DB 저장
+            CommentEntity commentEntity = new CommentEntity(dto, boardNumber, email);
+            commentRepository.save(commentEntity);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return PostCommentResponseDto.success();
+    }
+
+    // * 댓글 리스트
+    @Override
+    public ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardNumber) {
+
+        List<GetCommentListResultSet> commentListResultSets = new ArrayList<>();
+
+        try {
+            // ! 게시물 존재 여부 확인
+            boolean existsBoard = boardRepository.existsByBoardNumber(boardNumber);
+            if (!existsBoard) return GetCommentListResponseDto.noExistBoard();
+
+            // ! 댓글 리스트 조회
+            commentListResultSets = boardRepository.getCommentList(boardNumber);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return GetCommentListResponseDto.databaseError();
+        }
+
+        return GetCommentListResponseDto.success(commentListResultSets);
 
     }
 

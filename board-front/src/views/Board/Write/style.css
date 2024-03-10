@@ -28,11 +28,6 @@
 .board-write-title-textarea {
     width: 100%;
 
-    border: none;
-    outline: none;
-    background: none;
-    resize: none;
-
     color: rgba(0, 0, 0, 1);
 
     font-size: 32px;
@@ -50,12 +45,7 @@
 }
 
 .board-write-content-textarea {
-    /* textarea 기본 스타일 제거 */
-    border: none;
-    outline: none;
-    background: none;
-    resize: none;
-    
+
     flex: 1;
 
     color: rgba(0, 0, 0, 0.7);

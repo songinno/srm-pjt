@@ -56,4 +56,19 @@ public class BoardEntity {
         this.viewCount++;
     }
 
+    // * 좋아요 수 카운트 업 메서드
+    public void favoriteCountUp() {
+        this.favoriteCount++;
+    }
+
+    // * 좋아요 수 카운트 다운 메서드
+    public void favoriteCountDown() {
+        this.favoriteCount--;
+    }
+
+    // * 댓글 수 카운트 업 메서드
+    public void commentViewCountUp() {
+        this.commentCount++;
+    }
+
 }
