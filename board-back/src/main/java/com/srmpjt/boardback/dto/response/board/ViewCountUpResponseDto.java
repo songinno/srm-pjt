@@ -2,28 +2,18 @@ package com.srmpjt.boardback.dto.response.board;
 
 import com.srmpjt.boardback.common.ResponseCode;
 import com.srmpjt.boardback.common.ResponseMessage;
-import com.srmpjt.boardback.dto.object.CommentListItem;
 import com.srmpjt.boardback.dto.response.ResponseDto;
-import com.srmpjt.boardback.repository.resultSet.GetCommentListResultSet;
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-
-@Getter
-public class GetCommentListResponseDto extends ResponseDto {
-
-    private List<CommentListItem> commentList;
-
-    private GetCommentListResponseDto(List<GetCommentListResultSet> resultSet) {
+public class ViewCountUpResponseDto extends ResponseDto  {
+    private ViewCountUpResponseDto() {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.commentList = CommentListItem.copyList(resultSet);
     }
 
     // * 성공
-    public static ResponseEntity<GetCommentListResponseDto> success(List<GetCommentListResultSet> resultSetList) {
-        GetCommentListResponseDto result = new GetCommentListResponseDto(resultSetList);
+    public static ResponseEntity<ViewCountUpResponseDto> success() {
+        ViewCountUpResponseDto result = new ViewCountUpResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

@@ -65,7 +65,7 @@ textarea {
     font-weight: 500;
     line-height: 140%;
 
-    cursor: not-allowed;
+    cursor: not-allowed; /* # 기능 동작을 막는 것은 별도 처리 필요 */
 } 
 
 /* * 마이페이지 버튼 */
@@ -97,6 +97,16 @@ textarea {
 
 /* * 기본 icon 상위 태그(링크 기능X) */
 .icon-box {
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-box-small {
     border-radius: 50%;
     width: 24px;
     height: 24px;
@@ -210,6 +220,15 @@ textarea {
 
 .comment-icon {
     background-image: url(assets/images/board/chat-light.png);
+}
+
+/* ! Pagination 관련 아이콘 */
+.expand-left-icon {
+    background-image: url(assets/images/pagination/expand-left.png);
+}
+
+.expand-right-icon {
+    background-image: url(assets/images/pagination/expand-right.png);
 }
 
 /* * Auth(로그인, 회원가입) */

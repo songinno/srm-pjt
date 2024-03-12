@@ -5,10 +5,7 @@ import com.srmpjt.boardback.dto.request.board.PostBoardRequestDto;
 import com.srmpjt.boardback.dto.request.board.PostCommentRequestDto;
 import com.srmpjt.boardback.dto.response.ResponseDto;
 import com.srmpjt.boardback.dto.response.board.*;
-import com.srmpjt.boardback.entity.BoardEntity;
-import com.srmpjt.boardback.entity.CommentEntity;
-import com.srmpjt.boardback.entity.FavoriteEntity;
-import com.srmpjt.boardback.entity.ImageEntity;
+import com.srmpjt.boardback.entity.*;
 import com.srmpjt.boardback.repository.*;
 import com.srmpjt.boardback.repository.resultSet.GetBoardResultSet;
 import com.srmpjt.boardback.repository.resultSet.GetCommentListResultSet;
@@ -43,11 +40,11 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
         try {
-            // * 유저 존재 여부 확인
+            // ! 유저 존재 여부 확인
             boolean userExists = userRepository.existsByEmail(email);
             if (!userExists) return PostBoardResponseDto.noExistUser();
 
-            // * Board 엔티티 생성 및 DB 저장
+            // ! Board 엔티티 생성 및 DB 저장
             // ! BoardEntity에 dto, email을 인자로 받는 생성자를 정의해서 처리
             BoardEntity boardEntity = new BoardEntity(dto, email);
             BoardEntity saved = boardRepository.save(boardEntity);
@@ -55,12 +52,12 @@ public class BoardServiceImpl implements BoardService {
             log.info("saved`s boardNumber = " + saved.getBoardNumber());
 
 
-            // * 첨부 이미지 엔티티 생성 및 DB 저장
+            // ! 첨부 이미지 엔티티 생성 및 DB 저장
             List<String> boardImageList = dto.getBoardImageList();
             List<ImageEntity> imageEntityList = new ArrayList<>();
 
             Stream<String> stream = boardImageList.stream();
-            // ! ImageEntity에 boardNumber, image를 인자로 받는 생성자 정의
+            // # ImageEntity에 boardNumber, image를 인자로 받는 생성자 정의
             stream.forEach(img -> imageEntityList.add(new ImageEntity(saved.getBoardNumber(), img)));
             imageRepository.saveAll(imageEntityList);
 
@@ -90,12 +87,12 @@ public class BoardServiceImpl implements BoardService {
             imageEntityList = imageRepository.findByBoardNumber(boardNumber);
 
             // ! 조회수 카운트업
-            Optional<BoardEntity> ob = boardRepository.findByBoardNumber(boardNumber);
+            /*Optional<BoardEntity> ob = boardRepository.findByBoardNumber(boardNumber);
             if (ob.isEmpty()) return GetBoardResponseDto.noExistBoard();
 
             BoardEntity boardEntity = ob.get();
             boardEntity.boardViewCountUp();
-            boardRepository.save(boardEntity);
+            boardRepository.save(boardEntity);*/
             // # BoardRepository에서 Native Query로 UPDATE 쿼리문을 실행해도 O
 
         } catch (Exception e) {
@@ -104,6 +101,41 @@ public class BoardServiceImpl implements BoardService {
         }
 
         return GetBoardResponseDto.success(resultSet, imageEntityList);
+    }
+
+
+    // * 게시물 삭제
+    @Override
+    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email) {
+
+        try {
+
+            // ! 게시물 확인
+            Optional<BoardEntity> ob = boardRepository.findByBoardNumber(boardNumber);
+            if (ob.isEmpty()) return DeleteBoardResponseDto.noExistBoard();
+
+            // ! 유저 존재 여부 확인
+            boolean existsEmail = userRepository.existsByEmail(email);
+            if (!existsEmail) return DeleteBoardResponseDto.noExistUser();
+
+            // ! 현재 게시물 작성자 - 인증된 유저 일치 여부 확인
+            BoardEntity boardEntity = ob.get();
+            if (!boardEntity.getWriterEmail().equals(email)) {
+                return DeleteBoardResponseDto.noPermission();
+            }
+
+            // ! 게시물 및 관련 데이터 전부 삭제
+            // TODO : JPA - 연관 관계 설정(@OneToMany 등) - cascade 옵션
+            imageRepository.deleteByBoardNumber(boardNumber);
+            favoriteRepository.deleteByBoardNumberAndUserEmail(boardNumber, email);
+            commentRepository.deleteByBoardNumberAndUserEmail(boardNumber, email);
+            boardRepository.delete(boardEntity);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return DeleteBoardResponseDto.success();
     }
 
     // * 좋아요 기능
@@ -216,6 +248,24 @@ public class BoardServiceImpl implements BoardService {
 
         return GetCommentListResponseDto.success(commentListResultSets);
 
+    }
+
+    // * 조회수 카운트업
+    @Override
+    public ResponseEntity<? super ViewCountUpResponseDto> viewCountUp(Integer boardNumber) {
+        try {
+            Optional<BoardEntity> ob = boardRepository.findByBoardNumber(boardNumber);
+            if (ob.isEmpty()) return ViewCountUpResponseDto.noExistBoard();
+
+            BoardEntity boardEntity = ob.get();
+            boardEntity.boardViewCountUp();
+            boardRepository.save(boardEntity);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return ViewCountUpResponseDto.success();
     }
 
 

@@ -1,9 +1,11 @@
 {
     "general-message": {
-        "Cookie does not exist.": "쿠키가 존재하지 않습니다."
+        "Cookie does not exist.": "쿠키가 존재하지 않습니다.",
+        "This service requires login.": "로그인이 필요한 서비스입니다."
     },
 
     "response-message": {
+        "Success.": "완료되었습니다.",
         "Validation failed.": "유효성 검사 오류입니다.",
         "Duplicate email.": "중복된 이메일입니다.",
         "Duplicate nickname.": "중복된 닉네임입니다.",

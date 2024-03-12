@@ -44,6 +44,7 @@ public class WebSecurityConfig {
                     // -> API 명세서에서 Header에 Authrization이 없는 것들을 설정 + file
                     .antMatchers("/", "/api/v1/auth/**", "/api/v1/search/**", "/file/**").permitAll()
                     .antMatchers(HttpMethod.GET, "/api/v1/board/**", "/api/v1/user/*").permitAll()
+                    .antMatchers(HttpMethod.PATCH, "/api/v1/board/**").permitAll() // # 조회 수 카운트업 요청
                     .anyRequest().authenticated().and() // # 지정하지 않은 나머지 매핑에 대해 모두 인증을 거치도록 설정
                     // # 인증 및 인가 오류 설정 (인가는 front-end에서 처리)
                     .exceptionHandling()

@@ -34,6 +34,16 @@ public class BoardController {
         return response;
     }
 
+    // * 게시물 삭제
+    @DeleteMapping("/{boardNumber}")
+    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(
+            @PathVariable Integer boardNumber,
+            @AuthenticationPrincipal String email
+    ) {
+        ResponseEntity<? super DeleteBoardResponseDto> response = boardService.deleteBoard(boardNumber, email);
+        return response;
+    }
+
     // * 좋아요 기능
     @PutMapping("/{boardNumber}/favorite")
     public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(@PathVariable Integer boardNumber, @AuthenticationPrincipal String email) {
@@ -53,8 +63,7 @@ public class BoardController {
     public ResponseEntity<? super PostCommentResponseDto> postComment(
             @RequestBody @Valid PostCommentRequestDto requestBody,
             @PathVariable Integer boardNumber,
-            @AuthenticationPrincipal String email)
-    {
+            @AuthenticationPrincipal String email) {
         ResponseEntity<? super PostCommentResponseDto> response = boardService.postComment(requestBody, boardNumber, email);
         return response;
     }
@@ -66,4 +75,10 @@ public class BoardController {
         return response;
     }
 
+    // * 조회수 카운트업
+    @PatchMapping("/{boardNumber}/viewCountUp")
+    public ResponseEntity<? super ViewCountUpResponseDto> viewCountUp(@PathVariable Integer boardNumber) {
+        ResponseEntity<? super ViewCountUpResponseDto> response = boardService.viewCountUp(boardNumber);
+        return response;
+    }
 }

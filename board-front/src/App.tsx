@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import './App.css';
 // import { latestBoardListMock, top3BoardListMock, commentListMock, favoriteListMock } from 'mocks';
 // import BoardItem from 'components/BoardItem';
@@ -27,30 +27,45 @@ import { GetSignInUserResponseDto } from 'apis/response/user';
 import { ResponseDto } from 'apis/response';
 import { ResponseCode } from 'types/enum';
 import { User as UserType } from 'types/interface';
+import { useTranslation } from 'react-i18next';
 
 //           Component : Application 컴포넌트           //
 function App() {
 
   //          State : 로그인 유저 전역 상태         //
-  const { setLoginUser, resetLoginUser } = useLoginUserStore();
+  const { loginUser, setLoginUser, resetLoginUser } = useLoginUserStore();
 
   //          State : 쿠키 상태         //
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [cookies, setCookie] = useCookies();
+
+  //          Function : 번역 함수          //
+  const { t } = useTranslation();
   
   //          Function : 로그인 유저 정보 Response 처리 함수          //
   const getSignInUserResponse = (responseBody: GetSignInUserResponseDto | ResponseDto | null) => {
+    
     if (!responseBody) return;
-    const { code } = responseBody;
-    if (code === ResponseCode.AUTHORIZATION_FAIL 
-        || code === ResponseCode.NOT_EXISTED_USER
-        || code === ResponseCode.DATABASE_ERROR) {
+    const { code, message } = responseBody;
+
+    switch(code) {
+      case ResponseCode.SUCCESS:
+        break;
+      default:
+        alert(t(`response-message.${message}`));
         resetLoginUser();
         return;
     }
 
-    const loginUser: UserType = { ...responseBody as GetSignInUserResponseDto  };
-    setLoginUser(loginUser);
+
+    console.log("업데이트 전 - " + loginUser);
+    console.log(loginUser);
+    
+    const newLoginUser: UserType = { ...responseBody as GetSignInUserResponseDto  };
+    
+    console.log("업데이트 후 - " + newLoginUser);
+    console.log(newLoginUser);
+    
+    setLoginUser(newLoginUser);
   };
 
   //          Effect : Access 토큰 쿠키 값이 변경될 때 마다 실행되는 함수         //
@@ -58,6 +73,11 @@ function App() {
   // 1. 로그인 카드 컴포넌트 - 로그인 버튼 클릭해서 서버에 로그인 요청 후, 생성된 토큰을 받은 경우
   // 2. Header 컴포넌트 - 로그아웃 버튼 클릭 시
   useEffect(() => {
+    
+    // TODO : 인증이 필요한 다른 페이지로 이동할 때마다 이 함수가 호출됨 
+    // - 인증이 필요한 페이지로 가면, 쿠키를 새로 발급 받기 때문인듯?
+    // - loginUser(전역상태)가 null로 바뀌어버림. 기억을 못함;;
+
     if (!cookies.accessToken) {
       resetLoginUser();
       return;
@@ -66,8 +86,7 @@ function App() {
     // ! 로그인 유저 정보를 가져와서 전역 상태값 업데이트
     getSignInUserRequest(cookies.accessToken)
       .then(getSignInUserResponse)
-  }, [cookies.accessToken]); // TODO : 의존 배열에 setLoginUser(), resetLoginUser() -> useCallback() 고려
-  
+  }, [cookies.accessToken]); 
   
   //          Render : Application 컴포넌트 렌더링          //
   

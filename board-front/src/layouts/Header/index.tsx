@@ -21,23 +21,50 @@ export default function Header() {
   const { pathname } = useLocation();
   // console.log("pathname: " + pathname);
   
-  // TODO : useEffect로 확인해보기
-  const isMainPage = pathname === MAIN_PATH();
-  const isAuthPage = pathname.startsWith(AUTH_PATH());
-  const isSearchPage = pathname.startsWith(SEARCH_PATH(''));
-  const isUserPage = pathname.startsWith(USER_PATH(''));
-  const isBoardDetailPage = pathname.startsWith(BOARD_PATH() + "/" + BOARD_DETAIL_PATH(''));
-  const isBoardWritePage = pathname.startsWith(BOARD_PATH() + "/" +BOARD_WRITE_PATH());
-  const isBoardUpdatePage = pathname.startsWith(BOARD_PATH() + "/" +BOARD_UPDATE_PATH(''));
+  // const isMainPage = pathname === MAIN_PATH();
+  // const isAuthPage = pathname.startsWith(AUTH_PATH());
+  // const isSearchPage = pathname.startsWith(SEARCH_PATH(''));
+  // const isUserPage = pathname.startsWith(USER_PATH(''));
+  // const isBoardDetailPage = pathname.startsWith(BOARD_PATH() + "/" + BOARD_DETAIL_PATH(''));
+  // const isBoardWritePage = pathname.startsWith(BOARD_PATH() + "/" +BOARD_WRITE_PATH());
+  // const isBoardUpdatePage = pathname.startsWith(BOARD_PATH() + "/" +BOARD_UPDATE_PATH(''));
+  
+  //          State : 현재 페이지 경로 일치 여부 상태         //
+  const [isMainPage, setIsMainPage] = useState<boolean>(false);
+  const [isAuthPage, setIsAuthPage] = useState<boolean>(false);
+  const [isSearchPage, setIsSearchPage] = useState<boolean>(false);
+  const [isUserPage, setIsUserPage] = useState<boolean>(false);
+  const [isBoardDetailPage, setIsBoardDetailPage] = useState<boolean>(false);
+  const [isBoardWritePage, setIsBoardWritePage] = useState<boolean>(false);
+  const [isBoardUpdatePage, setIsBoardUpdatePage] = useState<boolean>(false);
+
+  //          Effect : Path Name 변경 시 마다 실행되는 함수         //
+  useEffect(() => {
+    const isMainPage = pathname === MAIN_PATH();
+    setIsMainPage(isMainPage);
+    const isAuthPage = pathname.startsWith(AUTH_PATH());
+    setIsAuthPage(isAuthPage);
+    const isSearchPage = pathname.startsWith(SEARCH_PATH(''));
+    setIsSearchPage(isSearchPage);
+    const isUserPage = pathname.startsWith(USER_PATH(''));
+    setIsUserPage(isUserPage);
+    const isBoardDetailPage = pathname.startsWith(BOARD_PATH() + "/" + BOARD_DETAIL_PATH(''));
+    setIsBoardDetailPage(isBoardDetailPage);
+    const isBoardWritePage = pathname.startsWith(BOARD_PATH() + "/" +BOARD_WRITE_PATH());
+    setIsBoardWritePage(isBoardWritePage);
+    const isBoardUpdatePage = pathname.startsWith(BOARD_PATH() + "/" +BOARD_UPDATE_PATH(''));
+    setIsBoardUpdatePage(isBoardUpdatePage);
+  }, [pathname]);
+
+  
+  //          State : Cookie, Login 상태         //
+  const [cookies, setCookies, removeCookies ] = useCookies();
+  const [isLogin, setIsLogin] = useState<boolean>(false);
 
   //          Effect : 로그인 유저 상태 변경 시 마다 실행되는 함수          //
   useEffect(() => {
     setIsLogin(loginUser !== null);
   }, [loginUser]);
-
-  //          State : Cookie, Login 상태         //
-  const [cookies, setCookies, removeCookies ] = useCookies();
-  const [isLogin, setIsLogin] = useState<boolean>(false);
 
   //          Function : 네비게이트 함수          //
   const navigate = useNavigate();

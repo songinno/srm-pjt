@@ -12,6 +12,11 @@ public interface BoardService {
     // * 게시물 상세
     ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber); // # @PathVariable을 통해 게시물 번호를 받아옴
 
+    // * 게시물 삭제
+    ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email);
+
+    // * 게시물 수정
+
     // * 좋아요 기능
     ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String email);
 
@@ -23,6 +28,10 @@ public interface BoardService {
 
     // * 댓글 리스트
     ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardNumber);
+
+    // * 조회수 카운트업
+    ResponseEntity<? super ViewCountUpResponseDto> viewCountUp(Integer boardNumber);
+
 
 
 }

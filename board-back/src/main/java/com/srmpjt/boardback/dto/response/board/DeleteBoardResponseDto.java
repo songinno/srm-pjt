@@ -2,28 +2,21 @@ package com.srmpjt.boardback.dto.response.board;
 
 import com.srmpjt.boardback.common.ResponseCode;
 import com.srmpjt.boardback.common.ResponseMessage;
-import com.srmpjt.boardback.dto.object.CommentListItem;
 import com.srmpjt.boardback.dto.response.ResponseDto;
-import com.srmpjt.boardback.repository.resultSet.GetCommentListResultSet;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-
 @Getter
-public class GetCommentListResponseDto extends ResponseDto {
+public class DeleteBoardResponseDto extends ResponseDto {
 
-    private List<CommentListItem> commentList;
-
-    private GetCommentListResponseDto(List<GetCommentListResultSet> resultSet) {
+    private DeleteBoardResponseDto() {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.commentList = CommentListItem.copyList(resultSet);
     }
 
     // * 성공
-    public static ResponseEntity<GetCommentListResponseDto> success(List<GetCommentListResultSet> resultSetList) {
-        GetCommentListResponseDto result = new GetCommentListResponseDto(resultSetList);
+    public static ResponseEntity<DeleteBoardResponseDto> success() {
+        DeleteBoardResponseDto result = new DeleteBoardResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -32,5 +25,17 @@ public class GetCommentListResponseDto extends ResponseDto {
     public static ResponseEntity<ResponseDto> noExistBoard() {
         ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_BOARD, ResponseMessage.NOT_EXISTED_BOARD);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    }
+
+    // ! 존재하지 않는 유저
+    public static ResponseEntity<ResponseDto> noExistUser() {
+        ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_USER, ResponseMessage.NOT_EXISTED_USER);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+    }
+
+    // ! 권한 없음
+    public static ResponseEntity<ResponseDto> noPermission() {
+        ResponseDto result = new ResponseDto(ResponseCode.NO_PERMISSION, ResponseMessage.NO_PERMISSION);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(result);
     }
 }

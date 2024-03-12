@@ -37,7 +37,7 @@ public class CommentEntity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
 
-        this.content = dto.getComment();
+        this.content = dto.getContent();
         this.writeDatetime = writeDatetime;
         this.userEmail = email;
         this.boardNumber = boardNumber;

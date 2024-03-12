@@ -3,19 +3,22 @@ import { SignInRequestDto, SignUpRequestDto } from './request/auth';
 import { SignInResponseDto, SignUpResponseDto } from './response/auth';
 import { ResponseDto } from './response';
 import { GetSignInUserResponseDto } from './response/user';
-import { PostBoardRequestDto } from './request/board';
-import { PostBoardResponseDto } from './response/board';
+import { PostBoardRequestDto, PostCommentRequestDto } from './request/board';
+import { DeleteBoardResponseDto, GetBoardResponseDto, GetCommentResponseDto, GetFavoriteListResponseDto, PostBoardResponseDto, PostCommentResponseDto, PutFavoriteResponseDto, ViewCountUpResponseDto } from './response/board';
 
 
-// * 로그인 및 회원가입 요청 //
+// *** 서버 요청 URL 정보
 const DOMAIN = 'http://localhost:4000';
 
 const API_DOMAIN = `${DOMAIN}/api/v1`;
 
-// TODO : 함수로 할 필요?
+// *** 로그인 및 회원가입 요청
+
+// Description : 파라미터가 있을 경우, URL에 넣기 위해 함수로 정의
 const SIGN_IN_URL = () => `${API_DOMAIN}/auth/sign-in`;
 const SIGN_UP_URL = () => `${API_DOMAIN}/auth/sign-up`;
 
+// ! 로그인 요청
 export const signInRequest = async (requestBody: SignInRequestDto) => {
     const result = await axios.post(SIGN_IN_URL(), requestBody)
         .then(response => {
@@ -31,8 +34,8 @@ export const signInRequest = async (requestBody: SignInRequestDto) => {
     return result;
 };
 
-// # 함수 식으로 표현해보기
-export const signUpRequest: (arg: SignUpRequestDto) => Promise<ResponseDto | SignUpResponseDto | null> = async function (requestBody) {
+// ! 회원가입 요청
+export const signUpRequest: (arg: SignUpRequestDto) => Promise<ResponseDto | SignUpResponseDto | null> = async function (requestBody) { // # 함수식 표현
     const result = await axios.post(SIGN_UP_URL(), requestBody)
         .then(response => {
             const responseBody: SignUpResponseDto = response.data;
@@ -46,7 +49,7 @@ export const signUpRequest: (arg: SignUpRequestDto) => Promise<ResponseDto | Sig
     return result;
 };
 
-// * 로그인 유저 정보 요청 //
+// *** 로그인 유저 정보 요청 //
 const GET_SIGN_IN_USER_URL = () => `${API_DOMAIN}/user`;
 
 const authorization = (accessToken: string) => {
@@ -66,7 +69,7 @@ export const getSignInUserRequest = async (accessToken: string) => {
     return result;
 };
 
-// * 파일 업로드 요청
+// *** 파일 업로드 요청
 const FILE_DOMAIN = `${DOMAIN}/file`;
 
 const FILE_UPLOAD_URL = () => `${FILE_DOMAIN}/upload`;
@@ -85,7 +88,43 @@ export const fileUploadRequest = async (data: FormData) => {
     return result;
 };
 
-// * 게시글 작성 요청
+// *** 게시물 상세 불러오기 요청
+const GET_BOARD_URL = (boardNumber: number | string) => `${API_DOMAIN}/board/${boardNumber}`;
+
+export const getBoardRequest: (arg: number | string) => Promise<ResponseDto | GetBoardResponseDto | null> 
+    = async function (boardNumber) {
+        const result = await axios.get(GET_BOARD_URL(boardNumber))
+            .then(response => {
+                const responseBody: GetBoardResponseDto = response.data;
+                return responseBody;
+            })
+            .catch(error => {
+                if (!error.response) return null;
+                const responseBody: ResponseDto = error.response.data;
+                return responseBody;
+            })
+        return result;
+};
+
+// *** 조회수 카운트업 요청
+const VIEW_COUNT_UP_URL = (boardNumber: number | string) => `${API_DOMAIN}/board/${boardNumber}/viewCountUp`;
+
+export const viewCountUpRuquest: (arg: number | string) => Promise<ResponseDto | ViewCountUpResponseDto | null>
+    = async function (boardNumber) {
+        const result = await axios.patch(VIEW_COUNT_UP_URL(boardNumber))
+            .then(response => {
+                const responseBody: ViewCountUpResponseDto = response.data;
+                return responseBody;
+            })
+            .catch(error => {
+                if (!error.response) return null;
+                const responseBody: ResponseDto = error.response.data;
+                return responseBody;
+            })
+        return result;
+};
+
+// *** 게시물 등록 요청
 const POST_BOARD_URL = () => `${API_DOMAIN}/board`;
 
 export const postBoardRequest = async (requestBody: PostBoardRequestDto, accessToken: string) => {
@@ -100,4 +139,97 @@ export const postBoardRequest = async (requestBody: PostBoardRequestDto, accessT
             return responseBody;
         })
     return result;
+};
+
+// *** 게시물 삭제 요청
+const DELETE_BOARD_URL = (boardNumber: string | number) => `${API_DOMAIN}/board/${boardNumber}`;
+
+export const deleteBoardRequest = async (boardNumber: string | number, accessToken: string) => {
+    const result = await axios.delete(DELETE_BOARD_URL(boardNumber), authorization(accessToken))
+        .then(response => {
+            const responseBody: DeleteBoardResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        })
+    return result;
+};
+
+// *** 좋아요 리스트 불러오기 요청
+const GET_FAVORITE_LIST_URL = (boardNumber: string | number) => `${API_DOMAIN}/board/${boardNumber}/favorite-list`;
+
+export const getFavoriteListRequest: (arg: string | number) => Promise<ResponseDto | GetFavoriteListResponseDto | null>
+    = async function(boardNumber) {
+        const result = await axios.get(GET_FAVORITE_LIST_URL(boardNumber))
+            .then(response => {
+                const responseBody: GetFavoriteListResponseDto = response.data;
+                return responseBody;
+            })
+            .catch(error => {
+                if (!error.response) return null;
+
+                const responseBody: ResponseDto = error.response.data;
+                return responseBody;
+            })
+        return result;
+}
+
+// *** 댓글 리스트 불러오기 요청
+const GET_COMMENT_LIST_URL = (boardNumber: string | number) => `${API_DOMAIN}/board/${boardNumber}/comment-list`;
+
+export const getCommentListRequest = async (boardNumber: string | number) => {
+    const result = await axios.get(GET_COMMENT_LIST_URL(boardNumber))
+        .then(response => {
+            const responseBody: GetCommentResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            console.log(error);
+            
+            if (!error.response) return null;
+
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        });
+    return result;
+};
+
+// *** 좋아요 기능 요청
+const PUT_FAVORITE_URL = (boardNumber: string | number) => `${API_DOMAIN}/board/${boardNumber}/favorite`;
+
+export const putFavoriteRequest = async (boardNumber: string| number, accessToken: string) => {
+    const result = await axios.put(PUT_FAVORITE_URL(boardNumber), {}, authorization(accessToken)) // # 2번째 파라미터 : data
+        .then(response => {
+            const responseBody: PutFavoriteResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) return null;
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        })
+    return result;
+};
+
+// *** 댓글 등록 요청
+const POST_COMMENT_URL = (boardNumber: string | number) => `${API_DOMAIN}/board/${boardNumber}/comment`;
+
+export const postCommentRequest 
+    = async (boardNumber: string | number, requestBody:PostCommentRequestDto, accessToken: string) => {
+        const result = await axios.post(POST_COMMENT_URL(boardNumber), requestBody, authorization(accessToken))
+            .then(response => {
+                const responseBody: PostCommentResponseDto = response.data;
+                return responseBody;
+            })
+            .catch(error => {
+                if (!error.response) return null;
+
+                const responseBody: ResponseDto = error.response.data;
+                return responseBody;
+            })
+        return result;
 };

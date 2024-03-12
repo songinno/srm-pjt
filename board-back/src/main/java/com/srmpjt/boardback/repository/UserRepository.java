@@ -4,6 +4,7 @@ import com.srmpjt.boardback.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Repository
@@ -13,4 +14,7 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     boolean existsByTelNumber(String telNumber);
 
     Optional<UserEntity> findByEmail(String email);
+
+    @Transactional
+    void deleteByEmail(String email);
 }
