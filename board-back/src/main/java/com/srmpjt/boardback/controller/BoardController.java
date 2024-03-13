@@ -1,5 +1,6 @@
 package com.srmpjt.boardback.controller;
 
+import com.srmpjt.boardback.dto.request.board.PatchBoardRequestDto;
 import com.srmpjt.boardback.dto.request.board.PostBoardRequestDto;
 import com.srmpjt.boardback.dto.request.board.PostCommentRequestDto;
 import com.srmpjt.boardback.dto.response.board.*;
@@ -41,6 +42,16 @@ public class BoardController {
             @AuthenticationPrincipal String email
     ) {
         ResponseEntity<? super DeleteBoardResponseDto> response = boardService.deleteBoard(boardNumber, email);
+        return response;
+    }
+
+    @PatchMapping("/{boardNumber}")
+    public ResponseEntity<? super PatchBoardResponseDto> patchBoard(
+            @RequestBody @Valid PatchBoardRequestDto requestBody,
+            @PathVariable Integer boardNumber,
+            @AuthenticationPrincipal String email
+    ) {
+        ResponseEntity<? super PatchBoardResponseDto> response = boardService.patchBoard(requestBody, boardNumber, email);
         return response;
     }
 

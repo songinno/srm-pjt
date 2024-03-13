@@ -1,5 +1,6 @@
 package com.srmpjt.boardback.entity;
 
+import com.srmpjt.boardback.dto.request.board.PatchBoardRequestDto;
 import com.srmpjt.boardback.dto.request.board.PostBoardRequestDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -69,6 +70,12 @@ public class BoardEntity {
     // * 댓글 수 카운트 업 메서드
     public void commentViewCountUp() {
         this.commentCount++;
+    }
+
+    // * 게시물 Title, Content 수정 메서드
+    public void patchBoard(PatchBoardRequestDto dto) {
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.srmpjt.boardback.service;
 
+import com.srmpjt.boardback.dto.request.board.PatchBoardRequestDto;
 import com.srmpjt.boardback.dto.request.board.PostBoardRequestDto;
 import com.srmpjt.boardback.dto.request.board.PostCommentRequestDto;
 import com.srmpjt.boardback.dto.response.board.*;
@@ -16,6 +17,7 @@ public interface BoardService {
     ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email);
 
     // * 게시물 수정
+    ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email);
 
     // * 좋아요 기능
     ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String email);

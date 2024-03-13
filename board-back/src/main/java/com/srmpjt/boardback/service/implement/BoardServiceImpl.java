@@ -1,6 +1,7 @@
 package com.srmpjt.boardback.service.implement;
 
 import com.srmpjt.boardback.dto.object.CommentListItem;
+import com.srmpjt.boardback.dto.request.board.PatchBoardRequestDto;
 import com.srmpjt.boardback.dto.request.board.PostBoardRequestDto;
 import com.srmpjt.boardback.dto.request.board.PostCommentRequestDto;
 import com.srmpjt.boardback.dto.response.ResponseDto;
@@ -137,6 +138,58 @@ public class BoardServiceImpl implements BoardService {
         }
         return DeleteBoardResponseDto.success();
     }
+
+
+    // * 게시물 수정
+    @Override
+    public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email) {
+
+        try {
+            // ! 유저 존재 여부 확인
+            boolean existsEmail = userRepository.existsByEmail(email);
+            if (!existsEmail) return PatchBoardResponseDto.noExistUser();
+
+            // ! 게시물 불러오기
+            Optional<BoardEntity> ob = boardRepository.findByBoardNumber(boardNumber);
+            if (ob.isEmpty()) return PatchBoardResponseDto.noExistBoard();
+
+            BoardEntity boardEntity = ob.get();
+
+            // ! 게시물 작성자-사용자 일치 여부 확인
+            if (!boardEntity.getWriterEmail().equals(email)) {
+                return PatchBoardResponseDto.noPermission();
+            }
+
+            // ! 게시물 수정
+            // # title, content 수정 및 저장
+            boardEntity.patchBoard(dto);
+            boardRepository.save(boardEntity);
+
+            // # 이미지 리스트 수정
+            // 기존 이미지 리스트 삭제
+            imageRepository.deleteByBoardNumber(boardNumber);
+            List<String> boardImageList = dto.getBoardImageList();
+
+            // 새로운 이미지 엔터티 리스트 생성 및 저장
+            List<ImageEntity> imageEntityList = new ArrayList<>();
+
+            boardImageList.forEach(boardImage -> {
+                ImageEntity imageEntity = new ImageEntity(boardNumber, boardImage);
+                imageEntityList.add(imageEntity);
+            });
+            imageRepository.saveAll(imageEntityList);
+
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return PatchBoardResponseDto.databaseError();
+        }
+        return PatchBoardResponseDto.success();
+    }
+
 
     // * 좋아요 기능
     @Override
