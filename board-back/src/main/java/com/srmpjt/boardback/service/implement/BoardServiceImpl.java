@@ -17,7 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -36,6 +38,8 @@ public class BoardServiceImpl implements BoardService {
     private final FavoriteRepository favoriteRepository;
 
     private final CommentRepository commentRepository;
+
+    private final BoardListViewRepository boardListViewRepository;
 
     // * 게시물 등록
     @Override
@@ -190,7 +194,6 @@ public class BoardServiceImpl implements BoardService {
         return PatchBoardResponseDto.success();
     }
 
-
     // * 좋아요 기능
     @Override
     public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String email) {
@@ -319,6 +322,50 @@ public class BoardServiceImpl implements BoardService {
             return ResponseDto.databaseError();
         }
         return ViewCountUpResponseDto.success();
+    }
+
+    // * 최신 게시물 리스트
+    @Override
+    public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList() {
+
+        List<BoardListViewEntity> boardListViewEntityList = new ArrayList<>();
+
+        try {
+
+            boardListViewEntityList = boardListViewRepository.findAllByOrderByWriteDatetimeDesc();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return GetLatestBoardListResponseDto.databaseError();
+        }
+
+        return GetLatestBoardListResponseDto.success(boardListViewEntityList);
+    }
+
+    @Override
+    public ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList() {
+
+        List<BoardListViewEntity> boardListViewEntityList = new ArrayList<>();
+
+        try {
+            // ! 현재 주의 월요일, 일요일
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            String monday = simpleDateFormat.format(calendar.getTime());
+
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+            calendar.add(Calendar.DATE, 7);
+            String sunday = simpleDateFormat.format(calendar.getTime());
+
+            boardListViewEntityList = boardListViewRepository.findTop3(monday, sunday);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return GetTop3BoardListResponseDto.databaseError();
+        }
+
+        return GetTop3BoardListResponseDto.success(boardListViewEntityList);
     }
 
 

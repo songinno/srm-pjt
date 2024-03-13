@@ -92,4 +92,17 @@ public class BoardController {
         ResponseEntity<? super ViewCountUpResponseDto> response = boardService.viewCountUp(boardNumber);
         return response;
     }
+
+    // * 최신 게시물 리스트
+    @GetMapping("/latest-list")
+    public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList() {
+        ResponseEntity<? super GetLatestBoardListResponseDto> response = boardService.getLatestBoardList();
+        return response;
+    }
+
+    @GetMapping("/top3-list")
+    public ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList() {
+        ResponseEntity<? super GetTop3BoardListResponseDto> response = boardService.getTop3BoardList();
+        return response;
+    }
 }

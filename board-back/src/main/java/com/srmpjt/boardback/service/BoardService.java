@@ -34,6 +34,10 @@ public interface BoardService {
     // * 조회수 카운트업
     ResponseEntity<? super ViewCountUpResponseDto> viewCountUp(Integer boardNumber);
 
+    // * 최신 게시물 리스트
+    ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList();
 
+    // * 주간 TOP3 게시물 리스트
+    ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList();
 
 }
