@@ -55,16 +55,8 @@ function App() {
         resetLoginUser();
         return;
     }
-
-
-    console.log("업데이트 전 - " + loginUser);
-    console.log(loginUser);
     
     const newLoginUser: UserType = { ...responseBody as GetSignInUserResponseDto  };
-    
-    console.log("업데이트 후 - " + newLoginUser);
-    console.log(newLoginUser);
-    
     setLoginUser(newLoginUser);
   };
 
@@ -73,11 +65,6 @@ function App() {
   // 1. 로그인 카드 컴포넌트 - 로그인 버튼 클릭해서 서버에 로그인 요청 후, 생성된 토큰을 받은 경우
   // 2. Header 컴포넌트 - 로그아웃 버튼 클릭 시
   useEffect(() => {
-    
-    // TODO : 인증이 필요한 다른 페이지로 이동할 때마다 이 함수가 호출됨 
-    // - 인증이 필요한 페이지로 가면, 쿠키를 새로 발급 받기 때문인듯?
-    // - loginUser(전역상태)가 null로 바뀌어버림. 기억을 못함;;
-
     if (!cookies.accessToken) {
       resetLoginUser();
       return;

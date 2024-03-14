@@ -3,6 +3,7 @@ import './style.css';
 import defaultProfileImage from 'assets/images/default_profile_image.jpg';
 import { BoardListItem } from 'types/interface';
 import { useNavigate } from 'react-router-dom';
+import { BOARD_DETAIL_PATH, BOARD_PATH } from 'constant';
 
 //          Interface : TOP 3 List Item         //
 interface Props {
@@ -18,24 +19,22 @@ export default function Top3Item(props: Props) {
   const { writeDatetime, writerNickname, writerProfileImage } = top3ListItem;
 
   //          Function : 네비게이트 함수          //
-  // const navigator = useNavigate();
+  const navigate = useNavigate();
 
   //          Event Handler : 게시물 아이템 클릭 이벤트 처리 함수           //
   const onClickHandler = () => {
-    // navigator(boardNumber);
+    navigate(BOARD_PATH() + '/' + BOARD_DETAIL_PATH(boardNumber));
   };
 
   //          Render : TOP 3 List Item 컴포넌트 렌더링           //
   return (
-    <div className='top-3-list-item' 
+    <div className='top-3-list-item' onClick={onClickHandler}
       style={{backgroundImage: `url(${boardTitleImage})`}}>
       <div className='top-3-list-item-main-box'>
         <div className='top-3-list-item-top'>
           <div className='top-3-list-item-profile-box'>
             <div className='top-3-list-item-profile-image' 
-              style={{backgroundImage: `url(${writerProfileImage ? writerProfileImage : defaultProfileImage})`}}
-              onClick={onClickHandler}  
-            ></div>
+              style={{backgroundImage: `url(${writerProfileImage ? writerProfileImage : defaultProfileImage})`}}></div>
           </div>
           <div className='top-3-list-item-write-box'>
             <div className='top-3-list-item-nickname'>{writerNickname}</div>

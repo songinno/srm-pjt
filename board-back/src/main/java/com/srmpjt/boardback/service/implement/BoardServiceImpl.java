@@ -342,6 +342,7 @@ public class BoardServiceImpl implements BoardService {
         return GetLatestBoardListResponseDto.success(boardListViewEntityList);
     }
 
+    // * 주간 TOP3 게시물 리스트
     @Override
     public ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList() {
 

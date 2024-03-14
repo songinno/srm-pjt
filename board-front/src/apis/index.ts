@@ -4,7 +4,7 @@ import { SignInResponseDto, SignUpResponseDto } from './response/auth';
 import { ResponseDto } from './response';
 import { GetSignInUserResponseDto } from './response/user';
 import { PatchBoardRequestDto, PostBoardRequestDto, PostCommentRequestDto } from './request/board';
-import { DeleteBoardResponseDto, GetBoardResponseDto, GetCommentResponseDto, GetFavoriteListResponseDto, PatchBoardResponseDto, PostBoardResponseDto, PostCommentResponseDto, PutFavoriteResponseDto, ViewCountUpResponseDto } from './response/board';
+import { DeleteBoardResponseDto, GetBoardResponseDto, GetCommentResponseDto, GetFavoriteListResponseDto, GetLatestBoardListResponseDto, GetTop3BoardListResponseDto, PatchBoardResponseDto, PostBoardResponseDto, PostCommentResponseDto, PutFavoriteResponseDto, ViewCountUpResponseDto } from './response/board';
 
 
 
@@ -207,8 +207,6 @@ export const getCommentListRequest = async (boardNumber: string | number) => {
             return responseBody;
         })
         .catch(error => {
-            console.log(error);
-            
             if (!error.response) return null;
 
             const responseBody: ResponseDto = error.response.data;
@@ -252,3 +250,39 @@ export const postCommentRequest
             })
         return result;
 };
+
+// *** 주간 TOP3 게시물 리스트 요청
+const GET_TOP3_BOARD_LIST_URL = () => `${API_DOMAIN}/board/top3-list`;
+
+export const getTop3BoardListRequest: () => Promise<GetTop3BoardListResponseDto | ResponseDto | null> = async function () {
+    const result = await axios.get(GET_TOP3_BOARD_LIST_URL())
+        .then(response => {
+            const responseBody: GetTop3BoardListResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.responseBody) return null;
+
+            const responseBody: ResponseDto = error.responseBody.data;
+            return responseBody;
+        })
+    return result;
+}
+
+// *** 최근 게시물 리스트 요청
+const GET_LATEST_BOARD_LIST_URL = () => `${API_DOMAIN}/board/latest-list`;
+
+export const getLatestBoardListRequest: () => Promise<GetLatestBoardListResponseDto | ResponseDto | null> = async function () {
+    const result = await axios.get(GET_LATEST_BOARD_LIST_URL())
+        .then(response => {
+            const responseBody: GetLatestBoardListResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.responseBody) return null;
+
+            const responseBody: ResponseDto = error.responseBody.data;
+            return responseBody;
+        })
+    return result;
+}

@@ -19,8 +19,6 @@ export default function Header() {
 
   //          State : URL path 상태         //
   const { pathname } = useLocation();
-  // console.log("pathname: " + pathname);
-  
   // const isMainPage = pathname === MAIN_PATH();
   // const isAuthPage = pathname.startsWith(AUTH_PATH());
   // const isSearchPage = pathname.startsWith(SEARCH_PATH(''));

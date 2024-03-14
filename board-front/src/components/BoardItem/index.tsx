@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import './style.css';
 import { BoardListItem } from 'types/interface';
 import { useNavigate } from 'react-router-dom';
 // 기본 프로필 이미지
 import defaultProfileImage from 'assets/images/default_profile_image.jpg';
+import { BOARD_DETAIL_PATH, BOARD_PATH } from 'constant';
 
 //                  Interface: Baord List Item 컴포넌트 Properties                  //
 interface Props {
-    boardListItem: BoardListItem
+    boardListItem: BoardListItem;
 }
 
 //                  Component : Board List Item 컴포넌트                    //
@@ -21,11 +22,11 @@ export default function BoardItem(props: Props) {
     const { writeDatetime, writerNickname, writerProfileImage } = boardListItem;
 
     //                   Function : 네비게이트 함수                  //
-    // const navigator = useNavigate();
+    const navigate = useNavigate();
 
     //                  Event Handler : 게시물 아이템 클릭 이벤트 처리 함수                     //
     const onClickHandler = () => {
-        // navigator(boardNumber);
+       navigate(BOARD_PATH() + '/' + BOARD_DETAIL_PATH(boardNumber));
     };
 
     //                  Render: Board List Item 컴포넌트 렌더링                  //
