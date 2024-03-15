@@ -15,6 +15,9 @@ interface Props {
 //                  Component : 메인 화면 하단 컴포넌트                   //
 export const MainBottom = (props: Props) => {
 
+    console.log("----- MainBottom 렌더링 -----");
+    
+
     //                  State : Properties                  //
     const { latestBoardList } = props;
 
@@ -41,6 +44,8 @@ export const MainBottom = (props: Props) => {
     //                  Effect : 메인 하단 화면 마운트 시, 실행되는 함수                    //
     // Description : 페이지네이션을 위한 처리
     useEffect(() => {
+        console.log("MainBottom - Effect");
+        
         setTotalList([...latestBoardList]);
     }, [latestBoardList]);
 

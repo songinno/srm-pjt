@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 
 const usePagination = <T>(viewCount: number, sectionCount: number) => {
+
+    console.log("----- 페이지네이션 훅 -----");
+    
+
     // # viewCount : 한 페이지에서 보여줄 객체의 개수
     // # sectionCount : 한 페이지에서 보여줄 섹션의 개수 Ex) <1, 2, 3, 4, 5> => 5
     // ! 객체)
@@ -44,6 +48,12 @@ const usePagination = <T>(viewCount: number, sectionCount: number) => {
 
     //                  Effect : Total List 변경 시 마다 실행되는 함수                  //
     useEffect(() => {
+
+        console.log("페이지네이션 Hook - Effect 함수");
+        console.log("totalList - " + totalList);
+        
+        
+
         // ! Total Page와 Total Section 결정
         const totalPage = Math.ceil(totalList.length / viewCount);
         const totalSection = Math.ceil(totalList.length / (viewCount * sectionCount)); // # 103개를 한 페이지 당 3개씩, 기본 10개 섹션 -> 한 섹션에서 30개씩 -> 4개 섹션 필요

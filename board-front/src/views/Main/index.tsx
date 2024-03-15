@@ -8,10 +8,11 @@ import { GetLatestBoardListResponseDto, GetTop3BoardListResponseDto } from 'apis
 import { ResponseDto } from 'apis/response';
 import { ResponseCode } from 'types/enum';
 import { useTranslation } from 'react-i18next';
-import { usePagination } from 'hooks';
 
 //                  Component : 메인 화면 컴포넌트                   //
 export default function Main() {
+  console.log("----- Main 컴포넌트 렌더링 -----");
+  
 
   //                  State : 주간 TOP3 게시물 리스트 상태         //
   const [ top3BoardList, setTop3BoardList ] = useState<BoardListItem[]>([]);
@@ -90,9 +91,14 @@ export default function Main() {
 
   //          Effect : 메인 화면 마운트 시, 실행되는 함수          //
   useEffect(() => {
+    console.log("Main 컴포넌트 - Effect 함수 호출");
     
     // ! useEffect() 안에서 async-await 함수 정의
     Promise.all([getTop3BoardListRequest(), getLatestBoardListRequest()])
+    .then(response => {
+      getTop3BoardListResponse(response[0]);
+      getLatestBoardListResponse(response[1]);
+    });
     
     // // ! 주간 TOP3 게시물 리스트 요청
     // getTop3BoardListRequest()

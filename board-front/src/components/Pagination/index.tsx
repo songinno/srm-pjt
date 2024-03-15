@@ -14,6 +14,8 @@ interface Props {
 
 //                  Component : 페이지네이션 컴포넌트                   //
 export const Pagination = (props: Props) => {
+    console.log("----- 페이지네이션 컴포넌트 렌더링 -----");
+    
 
     //                  State : Properties                  //
     const { currentPage, currentSection, viewPageList, totalSection } = props;
