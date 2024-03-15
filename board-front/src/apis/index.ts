@@ -5,8 +5,10 @@ import { ResponseDto } from './response';
 import { GetSignInUserResponseDto } from './response/user';
 import { PatchBoardRequestDto, PostBoardRequestDto, PostCommentRequestDto } from './request/board';
 import { DeleteBoardResponseDto, GetBoardResponseDto, GetCommentResponseDto, GetFavoriteListResponseDto, GetLatestBoardListResponseDto, GetTop3BoardListResponseDto, PatchBoardResponseDto, PostBoardResponseDto, PostCommentResponseDto, PutFavoriteResponseDto, ViewCountUpResponseDto } from './response/board';
+import { t } from 'i18next';
+import GetPopularListResponseDto from './response/search/get-popular-list.response.dto';
 
-
+// TODO : 모든 요청에서, 각 error 상태에 따라 alert 다르게 해야함
 
 // *** 서버 요청 URL 정보
 const DOMAIN = 'http://localhost:4000';
@@ -28,7 +30,10 @@ export const signInRequest = async (requestBody: SignInRequestDto) => {
             return responseBody;
         })
         .catch(error => {
-            if (!error.response.data) return null;
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+                return null;
+            }
             const responseBody: ResponseDto = error.response.data;
             return responseBody;
         })
@@ -43,7 +48,10 @@ export const signUpRequest: (arg: SignUpRequestDto) => Promise<ResponseDto | Sig
             return responseBody;
         })
         .catch(error => {
-            if (!error.response.data) return null;
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+                return null;
+            }
             const responseBody: ResponseDto = error.response.data;
             return responseBody;
         })
@@ -63,7 +71,10 @@ export const getSignInUserRequest = async (accessToken: string) => {
             const responseBody: GetSignInUserResponseDto = response.data;
             return responseBody;
         }).catch(error => {
-            if (!error.response) return null;
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+                return null;
+            }
             const responseBody: ResponseDto = error.response.data;
             return responseBody;
         });
@@ -84,7 +95,10 @@ export const fileUploadRequest = async (data: FormData) => {
             const responseBody: string = response.data;
             return responseBody;
         }).catch(error => {
-            return null;
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+                return null;
+            }
         })
     return result;
 };
@@ -100,7 +114,10 @@ export const getBoardRequest: (arg: number | string) => Promise<ResponseDto | Ge
                 return responseBody;
             })
             .catch(error => {
-                if (!error.response) return null;
+                if (!error.response) {
+                    alert(t('response-message.Network Error.'));
+                    return null;
+                }
                 const responseBody: ResponseDto = error.response.data;
                 return responseBody;
             })
@@ -118,7 +135,10 @@ export const viewCountUpRuquest: (arg: number | string) => Promise<ResponseDto |
                 return responseBody;
             })
             .catch(error => {
-                if (!error.response) return null;
+                if (!error.response) {
+                    alert(t('response-message.Network Error.'));
+                    return null;
+                }
                 const responseBody: ResponseDto = error.response.data;
                 return responseBody;
             })
@@ -135,7 +155,10 @@ export const postBoardRequest = async (requestBody: PostBoardRequestDto, accessT
             return responseBody;
         })
         .catch(error => {
-            if (!error.response) return null;
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+                return null;
+            }
             const responseBody: ResponseDto = error.response.data;
             return responseBody;
         })
@@ -152,7 +175,10 @@ export const deleteBoardRequest = async (boardNumber: string | number, accessTok
             return responseBody;
         })
         .catch(error => {
-            if (!error.response) return null;
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+                return null;
+            }
             
             const responseBody: ResponseDto = error.response.data;
             return responseBody;
@@ -170,7 +196,10 @@ export const patchBoardRequest = async (requestBody: PatchBoardRequestDto, board
             return responseBody;
         })
         .catch(error => {
-            if (!error.response) return null;
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+                return null;
+            }
 
             const responseBody: ResponseDto = error.response.data;
             return responseBody;
@@ -189,7 +218,10 @@ export const getFavoriteListRequest: (arg: string | number) => Promise<ResponseD
                 return responseBody;
             })
             .catch(error => {
-                if (!error.response) return null;
+                if (!error.response) {
+                    alert(t('response-message.Network Error.'));
+                    return null;
+                }
 
                 const responseBody: ResponseDto = error.response.data;
                 return responseBody;
@@ -207,7 +239,10 @@ export const getCommentListRequest = async (boardNumber: string | number) => {
             return responseBody;
         })
         .catch(error => {
-            if (!error.response) return null;
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+                return null;
+            }
 
             const responseBody: ResponseDto = error.response.data;
             return responseBody;
@@ -225,7 +260,11 @@ export const putFavoriteRequest = async (boardNumber: string| number, accessToke
             return responseBody;
         })
         .catch(error => {
-            if (!error.response) return null;
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+                return null;
+            }
+
             const responseBody: ResponseDto = error.response.data;
             return responseBody;
         })
@@ -243,7 +282,10 @@ export const postCommentRequest
                 return responseBody;
             })
             .catch(error => {
-                if (!error.response) return null;
+                if (!error.response) {
+                    alert(t('response-message.Network Error.'));
+                    return null;
+                }
 
                 const responseBody: ResponseDto = error.response.data;
                 return responseBody;
@@ -261,7 +303,10 @@ export const getTop3BoardListRequest: () => Promise<GetTop3BoardListResponseDto 
             return responseBody;
         })
         .catch(error => {
-            if (!error.responseBody) return null;
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+                return null;
+            }
 
             const responseBody: ResponseDto = error.responseBody.data;
             return responseBody;
@@ -279,9 +324,33 @@ export const getLatestBoardListRequest: () => Promise<GetLatestBoardListResponse
             return responseBody;
         })
         .catch(error => {
-            if (!error.responseBody) return null;
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+                return null;
+            }
 
             const responseBody: ResponseDto = error.responseBody.data;
+            return responseBody;
+        })
+    return result;
+}
+
+// *** 인기 검색어 리스트 요청
+const GET_POPULAR_LIST_URL = () => `${API_DOMAIN}/search/popular-list`;
+
+export const getPopularListRequest: () => Promise<GetPopularListResponseDto | ResponseDto | null> = async function () {
+    const result = await axios.get(GET_POPULAR_LIST_URL())
+        .then(response => {
+            const responseBody: GetPopularListResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+                return null;
+            }
+
+            const responseBody:ResponseDto = error.response.data;
             return responseBody;
         })
     return result;

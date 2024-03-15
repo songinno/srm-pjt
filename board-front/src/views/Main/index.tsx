@@ -3,16 +3,15 @@ import './style.css';
 import { MainTop } from './MainTop';
 import { MainBottom } from './MainBottom';
 import { BoardListItem } from 'types/interface';
-import { getLatestBoardListRequest, getTop3BoardListRequest } from 'apis';
+import { getLatestBoardListRequest, getPopularListRequest, getTop3BoardListRequest } from 'apis';
 import { GetLatestBoardListResponseDto, GetTop3BoardListResponseDto } from 'apis/response/board';
 import { ResponseDto } from 'apis/response';
 import { ResponseCode } from 'types/enum';
 import { useTranslation } from 'react-i18next';
+import GetPopularListResponseDto from 'apis/response/search/get-popular-list.response.dto';
 
 //                  Component : 메인 화면 컴포넌트                   //
 export default function Main() {
-  console.log("----- Main 컴포넌트 렌더링 -----");
-  
 
   //                  State : 주간 TOP3 게시물 리스트 상태         //
   const [ top3BoardList, setTop3BoardList ] = useState<BoardListItem[]>([]);
@@ -54,7 +53,6 @@ export default function Main() {
           isError: true,
           errorMessage: message
         }));
-        
         return;
     }
 
@@ -67,7 +65,7 @@ export default function Main() {
   //                  Function : 최신 게시물 리스트 요청에 대한 응답 처리 함수                //
   const getLatestBoardListResponse = (responseBody: GetLatestBoardListResponseDto | ResponseDto | null) => {
 
-    if (!responseBody) return;
+    if (!responseBody) return ;
 
     const { code, message } = responseBody;
 
@@ -85,37 +83,42 @@ export default function Main() {
 
     // ! 최신 게시물 리스트 상태 업데이트
     const { latestList } = responseBody as GetLatestBoardListResponseDto;
-    
     setLatestBoardList([...latestList]);
+  };
+
+  //                  Function : 인기 검색어 리스트 요청에 대한 응답 처리 함수                //
+  const getPopularListResponse = (responseBody: GetPopularListResponseDto | ResponseDto | null) => {
+
+    if (!responseBody) return ;
+
+    const { code, message } = responseBody;
+
+    switch (code) {
+      case ResponseCode.SUCCESS:
+        break;
+      default:
+        setRequestError(prev => ({
+          ...prev,
+          isError: true,
+          errorMessage: message
+        }));
+        return;
+    }
+
+    // ! 최신 게시물 리스트 상태 업데이트
+    const { popularWordList } = responseBody as GetPopularListResponseDto;
+    setPopularWordList([...popularWordList]);
   };
 
   //          Effect : 메인 화면 마운트 시, 실행되는 함수          //
   useEffect(() => {
-    console.log("Main 컴포넌트 - Effect 함수 호출");
-    
-    // ! useEffect() 안에서 async-await 함수 정의
-    Promise.all([getTop3BoardListRequest(), getLatestBoardListRequest()])
-    .then(response => {
-      getTop3BoardListResponse(response[0]);
-      getLatestBoardListResponse(response[1]);
-    });
-    
-    // // ! 주간 TOP3 게시물 리스트 요청
-    // getTop3BoardListRequest()
-    // .then(getTop3BoardListResponse);
-
-    // // ! 최신 게시물 리스트 요청
-    // getLatestBoardListRequest()
-    //   .then(getLatestBoardListResponse);
-    
-    
-    // ! 인기 검색어 리스트 요청
-
-    // ! 요청 오류 시, alert
-    // TODO : 이렇게 하면 받아오기 전에 alert 나갈듯
-    if (requestError.isError) alert(t(`response-message.${requestError.errorMessage}`));
+    // TODO : 각 요청에 대한 응답 함수에서 requestError 상태를 변경하는데, 응답보다 빨라서인지 바뀌어 있지를 않음. 코드 바꾸고 저장하면 또 뜨고... (방법 모색해야함)
+    Promise.all([
+      getTop3BoardListRequest().then(getTop3BoardListResponse), 
+      getLatestBoardListRequest().then(getLatestBoardListResponse),
+      getPopularListRequest().then(getPopularListResponse)
+    ])
   }, []);
-
 
   //                  Render : 메인 화면 컴포넌트 렌더링                   //
   return (

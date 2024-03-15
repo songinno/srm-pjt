@@ -1,6 +1,5 @@
 package com.srmpjt.boardback.entity;
 
-import com.srmpjt.boardback.repository.resultSet.GetPopularListResultSet;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

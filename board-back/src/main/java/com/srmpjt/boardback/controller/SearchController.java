@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SearchController {
 
-    SearchService searchService;
+    private final SearchService searchService;
 
     @GetMapping("/popular-list")
     public ResponseEntity<? super GetPopularListResponseDto> getPopularList() {

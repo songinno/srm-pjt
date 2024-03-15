@@ -17,6 +17,7 @@
         "Do not have permission.": "접근 권한이 없습니다.",
         "Database error.": "데이터베이스 오류가 발생했습니다.",
 
-        "Unidentified code.": "식별되지 않은 코드입니다."
+        "Unidentified code.": "식별되지 않은 코드입니다.",
+        "Network Error.": "네트워크 연결을 확인해주세요."
     }
 }
