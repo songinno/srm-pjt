@@ -41,6 +41,8 @@ public class BoardServiceImpl implements BoardService {
 
     private final BoardListViewRepository boardListViewRepository;
 
+    private final SearchLogRepository searchLogRepository;
+
     // * 게시물 등록
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
@@ -367,6 +369,36 @@ public class BoardServiceImpl implements BoardService {
         }
 
         return GetTop3BoardListResponseDto.success(boardListViewEntityList);
+    }
+
+    // * 검색 게시물 리스트
+    @Override
+    public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord, String preSearchWord) {
+
+        List<BoardListViewEntity> boardListViewEntityList = new ArrayList<>();
+
+        try {
+
+            boardListViewEntityList = boardListViewRepository.findByTitleContainsOrContentContainsOrderByWriteDatetimeDesc(searchWord, searchWord);
+
+            // ! SearchLog
+            // # SearchLog 엔터티 생성
+            SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, preSearchWord, false);
+
+            // # relation : 이전 검색어 존재 여부
+            boolean relation = (preSearchWord != null);
+
+            if (relation) {
+                searchLogEntity = new SearchLogEntity(preSearchWord, searchWord, true);
+            }
+            searchLogRepository.save(searchLogEntity);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return GetSearchBoardListResponseDto.databaseError();
+        }
+        return GetSearchBoardListResponseDto.success(boardListViewEntityList);
+
     }
 
 

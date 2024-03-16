@@ -92,7 +92,7 @@ ORDER BY write_datetime DESC
 LIMIT 5, 5;
 -- paging : (페이지 번호 - 1) * 5
 
--- 검색어 리스트
+-- 검색 게시물 리스트
 SELECT * FROM board_list_view
 WHERE title LIKE '%수정%' OR content LIKE '%수정%'
 ORDER BY write_datetime DESC;
@@ -120,6 +120,7 @@ LIMIT 15;
 SELECT relation_word, count(relation_word) AS count
 FROM search_log
 WHERE search_word = '검색어'
+AND relation_word IS NOT NULL
 GROUP BY relation_word
 ORDER BY count DESC
 LIMIT 15;

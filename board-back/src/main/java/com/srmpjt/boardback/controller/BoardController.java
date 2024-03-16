@@ -106,4 +106,14 @@ public class BoardController {
         ResponseEntity<? super GetTop3BoardListResponseDto> response = boardService.getTop3BoardList();
         return response;
     }
+
+    // * 검색 게시물 리스트
+    @GetMapping(value = {"/search-list/{searchWord}", "/search-list/{searchWord}/{preSearchWord}"})
+    public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(
+            @PathVariable String searchWord,
+            @PathVariable(value = "preSearchWord", required = false) String preSearchWord
+    ) {
+        ResponseEntity<? super GetSearchBoardListResponseDto> response = boardService.getSearchBoardList(searchWord, preSearchWord);
+        return response;
+    }
 }

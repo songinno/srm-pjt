@@ -20,4 +20,6 @@ public interface BoardListViewRepository extends JpaRepository<BoardListViewEnti
             "LIMIT 3"
     , nativeQuery = true)
     List<BoardListViewEntity> findTop3(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    List<BoardListViewEntity> findByTitleContainsOrContentContainsOrderByWriteDatetimeDesc(String title, String content);
 }

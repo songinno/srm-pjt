@@ -40,4 +40,7 @@ public interface BoardService {
     // * 주간 TOP3 게시물 리스트
     ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList();
 
+    // * 검색 게시물 리스트
+    ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord, String preSearchWord);
+
 }
