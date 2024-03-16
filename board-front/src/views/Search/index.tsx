@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { BoardListItem } from 'types/interface';
 import { latestBoardListMock } from 'mocks';
 import BoardItem from 'components/BoardItem';
+import { SEARCH_PATH } from 'constant';
 
 //					Component : 검색 화면 컴포넌트                   //
 export default function Search() {
@@ -17,11 +18,19 @@ export default function Search() {
 	//					State : 연관 검색어 리스트 상태(임시)					//
 	const [ relativeWordList, setRelativeWordList ] = useState<string[]>([]);
 
-	//					Effect : 마운트 시 실행 					 //
+	//					Function : 네비게이트 함수					//
+	const navigate = useNavigate();
+
+	//					Event Handler : 연관 검색어 클릭 이벤트 처리					//
+	const onRelativeWordClickHandler = (word: string) => {
+		navigate(SEARCH_PATH(word));
+	};
+
+	//					Effect : 검색어 변경 시 마다 실행					//
 	useEffect(() => {
 		setSearchBoardList(latestBoardListMock);
 		setRelativeWordList(['안녕', '하이', '게시물', '가나다라', 'MySQL', 'Java', 'PostgreSQL', 'React', 'Oracle']);
-	}, []);
+	}, [searchWord]);
 
 	//                  Render : 검색 화면 컴포넌트 렌더링                   //
 	return (
@@ -29,12 +38,12 @@ export default function Search() {
 			<div className="search-container">
 				<div className="search-title-box">
 					<div className="search-title">
-						<span className='emphasis'>{searchWord}</span>{'에 대한 검색 결과입니다.'}
+						<span className='search-title-emphasis'>{searchWord}</span>{'에 대한 검색 결과입니다.'}
 					</div>
-					<div className="search-count">{searchBoardList.length}</div>
+					<div className="search-count">{`${searchBoardList.length}건`}</div>
 				</div>
 				<div className="search-contents-box">
-					{searchBoardList.length 
+					{(!searchBoardList.length)
 						? (
 							<div className="search-contents-nothing">
 								{'검색 결과가 없습니다.'}
@@ -49,10 +58,19 @@ export default function Search() {
 					<div className="search-relation-box">
 						<div className="search-relation-card-box">
 							<div className="search-relation-card">
-								<div className="search-relation-card-title"></div>
-								<div className="search-relation-card-contents">
-									{relativeWordList.map((word, index) => (<div key={index} className="word-badge">{word}</div>))}
-								</div>
+								<div className="search-relation-card-title">{'연관 검색어'}</div>
+								{(!relativeWordList.length) 
+									? (
+										<div className="search-relation-card-contents-nothing">
+											{'연관 검색어가 없습니다.'}
+										</div>
+									) 
+									: (
+										<div className="search-relation-card-contents">
+											{relativeWordList.map((word, index) => (<div key={index} className="word-badge" onClick={() => onRelativeWordClickHandler(word)}>{word}</div>))}
+										</div>
+									)
+								}
 							</div>
 						</div>
 					</div>
