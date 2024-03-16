@@ -116,14 +116,14 @@ function BoardDetail() {
   //                  Effect : 게시물 번호 Path Variable 변경 시 마다, 해당 게시물 조회수 증가                   //
   // TODO : 어떤 원리인지 확인 필요
   // TODO : strict mode를 해제하면 조회수가 안올라감
-  let effectFlag = true;
+  // let effectFlag = true;
   useEffect(() => {
     
     if (!boardNumber) return;
-    if (effectFlag) {
-      effectFlag = false;
-      return;
-    }
+    // if (effectFlag) {
+    //   effectFlag = false;
+    //   return;
+    // }
 
     viewCountUpRuquest(boardNumber)
       .then(viewCountUpResponse)

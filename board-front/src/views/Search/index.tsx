@@ -4,7 +4,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { BoardListItem } from 'types/interface';
 import { latestBoardListMock } from 'mocks';
 import BoardItem from 'components/BoardItem';
-import { SEARCH_PATH } from 'constant';
+import { MAIN_PATH, SEARCH_PATH } from 'constant';
+import { getRelationListRequest, getSearchListRequest } from 'apis';
+import { GetSearchListResponseDto } from 'apis/response/board';
+import { ResponseDto } from 'apis/response';
+import { ResponseCode } from 'types/enum';
+import { t } from 'i18next';
+import { GetRelationListResponseDto } from 'apis/response/search';
+import { usePagination } from 'hooks';
+import { Pagination } from 'components/Pagination';
 
 //					Component : 검색 화면 컴포넌트                   //
 export default function Search() {
@@ -12,8 +20,24 @@ export default function Search() {
 	//					State : 검색 화면 Path Variable 상태					//
 	const { searchWord } = useParams();
 
+	//					State : 이전 검색어 상태					//
+	const [ preSearchWord, setPreSearchWord ] = useState<string | undefined>(undefined);
+
+	//					State : 페이지네이션 관련 상태					//
+	const { 
+        currentPage, setCurrentPage,
+        currentSection, setCurrentSection,
+        viewList, viewPageList, 
+        totalSection,
+        setTotalList 
+    } = usePagination<BoardListItem>(5, 10);
+
 	//					State : 검색 게시물 리스트 상태(임시)					//
-	const [ searchBoardList, setSearchBoardList ] = useState<BoardListItem[]>([]);
+	//	Description : 페이지네이션으로 대체
+	// const [ searchBoardList, setSearchBoardList ] = useState<BoardListItem[]>([]);
+
+	//					State : 검색 게시물 개수 상태					//
+	const [ searchListCount, setSearchListCount ] = useState<number>(0);
 
 	//					State : 연관 검색어 리스트 상태(임시)					//
 	const [ relativeWordList, setRelativeWordList ] = useState<string[]>([]);
@@ -26,10 +50,57 @@ export default function Search() {
 		navigate(SEARCH_PATH(word));
 	};
 
+	//					Function : 검색 게시물 리스트 요청에 대한 응답 처리 함수					//
+	const getSearchListResponse = (responseBody: GetSearchListResponseDto | ResponseDto | null) => {
+		if (!responseBody) return;
+
+		const { code, message } = responseBody;
+
+		switch (code) {
+			case ResponseCode.SUCCESS:
+				break;
+			default:
+				alert(t(`response-message.${message}`));
+				navigate(MAIN_PATH());
+				return;
+		}
+
+		const { searchList } = responseBody as GetSearchListResponseDto;
+
+		setTotalList([...searchList]);
+		setSearchListCount(searchList.length);
+		if (!searchWord) return;
+		setPreSearchWord(searchWord);
+	};
+
+	//					Function : 연관 검색어 리스트 요청에 대한 응답 처리 함수					//
+	const getRelationListResponse = (responseBody: GetRelationListResponseDto | ResponseDto | null) => {
+		if (!responseBody) return;
+
+		const { code, message } = responseBody;
+
+		switch (code) {
+			case ResponseCode.SUCCESS:
+				break;
+			default:
+				alert(t(`response-message.${message}`));
+				navigate(MAIN_PATH());
+				return;
+		}
+
+		const { relativeWordList } = responseBody as GetRelationListResponseDto;
+
+		setRelativeWordList([...relativeWordList]);
+	};
+
 	//					Effect : 검색어 변경 시 마다 실행					//
 	useEffect(() => {
-		setSearchBoardList(latestBoardListMock);
-		setRelativeWordList(['안녕', '하이', '게시물', '가나다라', 'MySQL', 'Java', 'PostgreSQL', 'React', 'Oracle']);
+		if (!searchWord) return;
+		Promise.all([
+			getSearchListRequest(searchWord, preSearchWord).then(getSearchListResponse),
+			getRelationListRequest(searchWord).then(getRelationListResponse)
+		]);
+
 	}, [searchWord]);
 
 	//                  Render : 검색 화면 컴포넌트 렌더링                   //
@@ -40,10 +111,10 @@ export default function Search() {
 					<div className="search-title">
 						<span className='search-title-emphasis'>{searchWord}</span>{'에 대한 검색 결과입니다.'}
 					</div>
-					<div className="search-count">{`${searchBoardList.length}건`}</div>
+					<div className="search-count">{`${viewList.length}건`}</div>
 				</div>
 				<div className="search-contents-box">
-					{(!searchBoardList.length)
+					{(!searchListCount)
 						? (
 							<div className="search-contents-nothing">
 								{'검색 결과가 없습니다.'}
@@ -51,7 +122,7 @@ export default function Search() {
 						) 
 						: (
 							<div className="search-contents">
-								{searchBoardList.map(board => (<BoardItem key={board.boardNumber} boardListItem={board} />))}
+								{viewList.map(board => (<BoardItem key={board.boardNumber} boardListItem={board} />))}
 							</div>
 						)	
 					}
@@ -75,9 +146,18 @@ export default function Search() {
 						</div>
 					</div>
 				</div>
-				<div className="search-pagination-box">
-					{/* <Pagination /> */}
-				</div>
+				{searchListCount && (
+					<div className="search-pagination-box">
+						<Pagination 
+							currentPage={currentPage}
+							currentSection={currentSection}
+							setCurrentPage={setCurrentPage}
+							setCurrentSection={setCurrentSection}
+							viewPageList={viewPageList}
+							totalSection={totalSection}
+						/>
+					</div>	
+				)}
 			</div>
 		</div>
 	)

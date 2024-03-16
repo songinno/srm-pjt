@@ -9,6 +9,7 @@ import DeleteBoardResponseDto from "./delete-board.response.dto";
 import PatchBoardResponseDto from "./patch-board.response.dto";
 import GetTop3BoardListResponseDto from "./get-top3-board-list.response.dto";
 import GetLatestBoardListResponseDto from "./get-latest-board-list.response.dto";
+import GetSearchListResponseDto from "./get-search-list.response.dto";
 
 export type {
     PostBoardResponseDto,
@@ -22,4 +23,5 @@ export type {
     PatchBoardResponseDto,
     GetTop3BoardListResponseDto,
     GetLatestBoardListResponseDto,
+    GetSearchListResponseDto,
 };

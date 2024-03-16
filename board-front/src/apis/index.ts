@@ -7,6 +7,7 @@ import { PatchBoardRequestDto, PostBoardRequestDto, PostCommentRequestDto } from
 import { DeleteBoardResponseDto, GetBoardResponseDto, GetCommentResponseDto, GetFavoriteListResponseDto, GetLatestBoardListResponseDto, GetTop3BoardListResponseDto, PatchBoardResponseDto, PostBoardResponseDto, PostCommentResponseDto, PutFavoriteResponseDto, ViewCountUpResponseDto } from './response/board';
 import { t } from 'i18next';
 import GetPopularListResponseDto from './response/search/get-popular-list.response.dto';
+import { GetRelationListResponseDto } from './response/search';
 
 // TODO : 모든 요청에서, 각 error 상태에 따라 alert 다르게 해야함
 
@@ -354,4 +355,48 @@ export const getPopularListRequest: () => Promise<GetPopularListResponseDto | Re
             return responseBody;
         })
     return result;
+}
+
+// *** 검색 게시물 리스트 요청
+const GET_SEARCH_LIST_URL = (searchWord: string, preSearchWord?: string) => 
+    `${API_DOMAIN}/board/search-list/${searchWord}${preSearchWord ? '/' + preSearchWord : ''}`;
+
+export const getSearchListRequest = async (searchWord: string, preSearchWord?: string) => {
+    const result = await axios.get(GET_SEARCH_LIST_URL(searchWord, preSearchWord))
+        .then(response => {
+            const responseBody = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+            return null;
+            }
+
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        })
+    return result;
+};
+
+// *** 연관 검색어 리스트 요청
+const GET_RELATION_LIST_URL = (searchWord: string) => `${API_DOMAIN}/search/${searchWord}/relation-list`;
+
+export const getRelationListRequest: (arg: string) => Promise<GetRelationListResponseDto | ResponseDto | null> 
+    = async function(searchWord: string) {
+        const result = await axios.get(GET_RELATION_LIST_URL(searchWord))
+            .then(response => {
+                const responseBody: GetRelationListResponseDto = response.data;
+                return responseBody;
+            })
+            .catch(error => {
+                if (!error.response) {
+                    alert(t('response-message.Network Error.'));
+                return null;
+                }
+
+                const responseBody: ResponseDto = error.response.data;
+                return responseBody;
+            })
+        return result;
 }
