@@ -1,10 +1,12 @@
 package com.srmpjt.boardback.service.implement;
 
 import com.srmpjt.boardback.dto.request.user.PatchNicknameRequestDto;
+import com.srmpjt.boardback.dto.request.user.PatchProfileImageRequestDto;
 import com.srmpjt.boardback.dto.response.ResponseDto;
 import com.srmpjt.boardback.dto.response.user.GetSignInUserResponseDto;
 import com.srmpjt.boardback.dto.response.user.GetUserResponseDto;
 import com.srmpjt.boardback.dto.response.user.PatchNicknameResponseDto;
+import com.srmpjt.boardback.dto.response.user.PatchProfileImageResponseDto;
 import com.srmpjt.boardback.entity.UserEntity;
 import com.srmpjt.boardback.repository.UserRepository;
 import com.srmpjt.boardback.service.UserService;
@@ -82,5 +84,25 @@ public class UserServiceImpl implements UserService {
             return PatchNicknameResponseDto.databaseError();
         }
         return PatchNicknameResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super PatchProfileImageResponseDto> patchProfileImage(PatchProfileImageRequestDto dto, String email) {
+        try {
+
+            // ! 유저 존재 여부 확인
+            Optional<UserEntity> ou = userRepository.findByEmail(email);
+            if (ou.isEmpty()) return PatchProfileImageResponseDto.noExistUser();
+
+            // ! 프로필 이미지 수정
+            UserEntity userEntity = ou.get();
+            userEntity.updateProfileImage(dto.getProfileImage());
+            userRepository.save(userEntity);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return PatchProfileImageResponseDto.databaseError();
+        }
+        return PatchProfileImageResponseDto.success();
     }
 }

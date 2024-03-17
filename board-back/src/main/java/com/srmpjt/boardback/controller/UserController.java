@@ -1,9 +1,11 @@
 package com.srmpjt.boardback.controller;
 
 import com.srmpjt.boardback.dto.request.user.PatchNicknameRequestDto;
+import com.srmpjt.boardback.dto.request.user.PatchProfileImageRequestDto;
 import com.srmpjt.boardback.dto.response.user.GetSignInUserResponseDto;
 import com.srmpjt.boardback.dto.response.user.GetUserResponseDto;
 import com.srmpjt.boardback.dto.response.user.PatchNicknameResponseDto;
+import com.srmpjt.boardback.dto.response.user.PatchProfileImageResponseDto;
 import com.srmpjt.boardback.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,15 @@ public class UserController {
             @AuthenticationPrincipal String email
     ) {
         ResponseEntity<? super PatchNicknameResponseDto> response = userService.patchNickname(dto, email);
+        return response;
+    }
+
+    @PatchMapping("/profile-image")
+    public ResponseEntity<? super PatchProfileImageResponseDto> patchProfileImage(
+            @RequestBody @Valid PatchProfileImageRequestDto dto,
+            @AuthenticationPrincipal String email
+    ) {
+        ResponseEntity<? super PatchProfileImageResponseDto> response = userService.patchProfileImage(dto, email);
         return response;
     }
 }

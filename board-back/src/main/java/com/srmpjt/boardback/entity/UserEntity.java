@@ -46,4 +46,9 @@ public class UserEntity {
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    // ! 프로필 이미지 수정 메서드
+    public void updateProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 }
