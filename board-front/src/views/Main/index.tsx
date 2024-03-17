@@ -13,7 +13,7 @@ import GetPopularListResponseDto from 'apis/response/search/get-popular-list.res
 //                  Component : 메인 화면 컴포넌트                   //
 export default function Main() {
 
-  //                  State : 주간 TOP3 게시물 리스트 상태         //
+  //                  State : 월간 TOP3 게시물 리스트 상태         //
   const [ top3BoardList, setTop3BoardList ] = useState<BoardListItem[]>([]);
 
   //                  State : 최신 게시물 리스트 상태(임시)                   //
@@ -37,7 +37,7 @@ export default function Main() {
   //                  Function : 번역 함수                  //
   const { t } = useTranslation();
 
-  //                  Function : 주간 TOP3 게시물 리스트 요청에 대한 응답 처리 함수                //
+  //                  Function : 월간 TOP3 게시물 리스트 요청에 대한 응답 처리 함수                //
   const getTop3BoardListResponse = (responseBody: GetTop3BoardListResponseDto | ResponseDto | null) => {
 
     if (!responseBody) return;
@@ -56,7 +56,7 @@ export default function Main() {
         return;
     }
 
-    // ! 주간 TOP3 게시물 리스트 상태 업데이트
+    // ! 월간 TOP3 게시물 리스트 상태 업데이트
     const { top3List } = responseBody as GetTop3BoardListResponseDto;
     
     setTop3BoardList([...top3List]);
@@ -105,7 +105,7 @@ export default function Main() {
         return;
     }
 
-    // ! 최신 게시물 리스트 상태 업데이트
+    // ! 인기 검색어 리스트 상태 업데이트
     const { popularWordList } = responseBody as GetPopularListResponseDto;
     setPopularWordList([...popularWordList]);
   };
@@ -124,7 +124,7 @@ export default function Main() {
   return (
     <>
       <MainTop top3BoardList={top3BoardList}/>
-      <MainBottom latestBoardList={latestBoardList}/>
+      <MainBottom latestBoardList={latestBoardList} popularWordList={popularWordList}/>
     </>
   )
 }

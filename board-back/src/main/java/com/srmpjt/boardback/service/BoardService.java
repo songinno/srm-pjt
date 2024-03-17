@@ -37,7 +37,7 @@ public interface BoardService {
     // * 최신 게시물 리스트
     ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList();
 
-    // * 주간 TOP3 게시물 리스트
+    // * 월간 TOP3 게시물 리스트
     ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList();
 
     // * 검색 게시물 리스트

@@ -100,7 +100,7 @@ public class BoardController {
         return response;
     }
 
-    //  * 주간 TOP3 게시물 리스트
+    //  * 월간 TOP3 게시물 리스트
     @GetMapping("/top3-list")
     public ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList() {
         ResponseEntity<? super GetTop3BoardListResponseDto> response = boardService.getTop3BoardList();

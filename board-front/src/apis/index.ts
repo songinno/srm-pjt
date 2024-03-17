@@ -294,7 +294,7 @@ export const postCommentRequest
         return result;
 };
 
-// *** 주간 TOP3 게시물 리스트 요청
+// *** 월간 TOP3 게시물 리스트 요청
 const GET_TOP3_BOARD_LIST_URL = () => `${API_DOMAIN}/board/top3-list`;
 
 export const getTop3BoardListRequest: () => Promise<GetTop3BoardListResponseDto | ResponseDto | null> = async function () {

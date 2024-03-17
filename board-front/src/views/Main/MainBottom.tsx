@@ -10,13 +10,14 @@ import { BoardListItem } from "types/interface";
 //                  Interface : Propperties 타입                 //
 interface Props {
     latestBoardList: BoardListItem[];
+    popularWordList: string[];
 };
 
 //                  Component : 메인 화면 하단 컴포넌트                   //
 export const MainBottom = (props: Props) => {
 
     //                  State : Properties                  //
-    const { latestBoardList } = props;
+    const { latestBoardList, popularWordList } = props;
 
     //                  State : 페이지네이션 관련 상태                  //
     const { 
@@ -26,9 +27,6 @@ export const MainBottom = (props: Props) => {
         totalSection,
         setTotalList 
     } = usePagination<BoardListItem>(5, 5);
-
-    //                  State : 인기 검색어 리스트 상태                   //
-    const [ popularWordList, setPopularWordList ] = useState<string[]>([]);
 
     //                  Function : 네비게이트 함수          //
     const navigate = useNavigate();

@@ -344,15 +344,16 @@ public class BoardServiceImpl implements BoardService {
         return GetLatestBoardListResponseDto.success(boardListViewEntityList);
     }
 
-    // * 주간 TOP3 게시물 리스트
+    // * 월간 TOP3 게시물 리스트
     @Override
     public ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList() {
 
         List<BoardListViewEntity> boardListViewEntityList = new ArrayList<>();
 
         try {
-            // ! 현재 주의 월요일, 일요일
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            // ! 주간 TOP3
+            // # 현재 주의 월요일, 일요일
+            /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
             String monday = simpleDateFormat.format(calendar.getTime());
@@ -361,7 +362,22 @@ public class BoardServiceImpl implements BoardService {
             calendar.add(Calendar.DATE, 7);
             String sunday = simpleDateFormat.format(calendar.getTime());
 
-            boardListViewEntityList = boardListViewRepository.findTop3(monday, sunday);
+            boardListViewEntityList = boardListViewRepository.findTop3(monday, sunday);*/
+
+            // ! 월간 TOP3
+            // # 월초, 월말
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar calendar = Calendar.getInstance();
+            int minimum = calendar.getActualMinimum(Calendar.DAY_OF_MONTH);
+            int maximum = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+            calendar.set(Calendar.DAY_OF_MONTH, minimum);
+            String firstDay = simpleDateFormat.format(calendar.getTime());
+
+            calendar.set(Calendar.DAY_OF_MONTH, maximum);
+            String lastDay = simpleDateFormat.format(calendar.getTime());
+
+            boardListViewEntityList = boardListViewRepository.findTop3(firstDay, lastDay);
 
         } catch (Exception e) {
             e.printStackTrace();
