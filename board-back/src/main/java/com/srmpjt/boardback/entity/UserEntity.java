@@ -31,7 +31,7 @@ public class UserEntity {
 
     private boolean agreedPersonal;
 
-    // 생성자
+    // ! 회원 가입을 위한 생성자
     public UserEntity(SignUpRequestDto dto) {
         this.email = dto.getEmail();
         this.password = dto.getPassword();
@@ -39,7 +39,11 @@ public class UserEntity {
         this.telNumber = dto.getTelNumber();
         this.address = dto.getAddress();
         this.addressDetail = dto.getAddressDetail();
-        // TODO : DTO에 profileImage는 없음
         this.agreedPersonal = dto.getAgreedPersonal();
+    }
+
+    // ! 닉네임 수정 메서드
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

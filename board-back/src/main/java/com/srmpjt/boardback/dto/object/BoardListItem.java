@@ -36,6 +36,7 @@ public class BoardListItem {
         this.writerProfileImage = boardListViewEntity.getWriterProfileImage();
     }
 
+    // ! BoardListViewEntity의 List를 파라미터로 받아, BoardListItem의 List로 반환해주는 메서드
     public static List<BoardListItem> getList(List<BoardListViewEntity> boardListViewEntityList) {
         List<BoardListItem> list = new ArrayList<>();
 

@@ -43,4 +43,7 @@ public interface BoardService {
     // * 검색 게시물 리스트
     ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord, String preSearchWord);
 
+    // * 특정 유저 게시물 리스트
+    ResponseEntity<? super GetUserBoardListResponseDto> getUserBoardList(String email);
+
 }
