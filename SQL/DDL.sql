@@ -1,4 +1,3 @@
-
 -- database 생성
 create database board;
 
@@ -90,10 +89,25 @@ ALTER TABLE board.comment
     FOREIGN KEY (board_number)
     REFERENCES board (board_number);
 
--- DCL
-create user 'developer'@'%' IDENTIFIED by 'askl3114';
+CREATE VIEW board_list_view AS
+SELECT 
+    B.board_number AS board_number,
+    B.title AS title,
+    B.content AS content,
+    I.image AS title_image,
+    B.favorite_count as favorite_count,
+    B.comment_count as comment_count,
+    B.view_count AS view_count,
+    B.write_datetime AS write_datetime,
+    U.nickname AS writer_nickname,
+    U.profile_image AS writer_profile_image,
+    B.writer_email AS writer_email
+FROM board AS B
+INNER JOIN user as U
+ON B.writer_email = U.email
+LEFT JOIN (SELECT board_number, ANY_VALUE(image) AS image FROM image GROUP BY board_number) AS I -- 서브쿼리 : 중복 제거
+ON B.board_number = I.board_number;
 
-grant select, update , delete, insert
-on board.*
-to 'developer'@'%';
-      
+ALTER TABLE board.image ADD COLUMN sequence INT PRIMARY KEY AUTO_INCREMENT COMMENT '이미지 번호';
+
+ALTER TABLE board.user ADD COLUMN agreed_personal BOOLEAN NOT NULL COMMENT '개인정보 동의 여부';
