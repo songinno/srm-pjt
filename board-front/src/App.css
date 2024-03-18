@@ -133,6 +133,16 @@ textarea {
     justify-content: center;
 }
 
+.icon-box-large {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* * 기본 icon 상위 태그(링크 기능 O) */
 .icon-button {
     border-radius: 50%;
@@ -248,6 +258,18 @@ textarea {
     background-image: url(assets/images/pagination/expand-right.png);
 }
 
+/* ! User 페이지 관련 아이콘 */
+.edit-icon {
+    background-image: url(assets/images/user/edit-light.png);
+}
+
+.image-box-white-light-icon {
+    background-image: url(assets/images/user/image-box-white-light.png);
+}
+
+.arrow-right-icon {
+    background-image: url(assets/images/user/arrow-right.png);
+}
 /* * Auth(로그인, 회원가입) */
 .auth-background-image {
     background-image: url(assets/images/auth/auth-background.png);

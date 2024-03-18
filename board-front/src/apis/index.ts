@@ -2,12 +2,13 @@ import axios from 'axios';
 import { SignInRequestDto, SignUpRequestDto } from './request/auth';
 import { SignInResponseDto, SignUpResponseDto } from './response/auth';
 import { ResponseDto } from './response';
-import { GetSignInUserResponseDto } from './response/user';
+import { GetSignInUserResponseDto, GetUserResponseDto, PatchNicknameResponseDto, PatchProfileImageResponseDto } from './response/user';
 import { PatchBoardRequestDto, PostBoardRequestDto, PostCommentRequestDto } from './request/board';
-import { DeleteBoardResponseDto, GetBoardResponseDto, GetCommentResponseDto, GetFavoriteListResponseDto, GetLatestBoardListResponseDto, GetTop3BoardListResponseDto, PatchBoardResponseDto, PostBoardResponseDto, PostCommentResponseDto, PutFavoriteResponseDto, ViewCountUpResponseDto } from './response/board';
+import { DeleteBoardResponseDto, GetBoardResponseDto, GetCommentResponseDto, GetFavoriteListResponseDto, GetLatestBoardListResponseDto, GetTop3BoardListResponseDto, GetUserBoardListResponseDto, PatchBoardResponseDto, PostBoardResponseDto, PostCommentResponseDto, PutFavoriteResponseDto, ViewCountUpResponseDto } from './response/board';
 import { t } from 'i18next';
 import GetPopularListResponseDto from './response/search/get-popular-list.response.dto';
 import { GetRelationListResponseDto } from './response/search';
+import { PatchNicknameRequestDto, PatchProfileImageRequestDto } from './request/user';
 
 // TODO : 모든 요청에서, 각 error 상태에 따라 alert 다르게 해야함
 
@@ -98,8 +99,8 @@ export const fileUploadRequest = async (data: FormData) => {
         }).catch(error => {
             if (!error.response) {
                 alert(t('response-message.Network Error.'));
-                return null;
             }
+            return null;
         })
     return result;
 };
@@ -400,3 +401,88 @@ export const getRelationListRequest: (arg: string) => Promise<GetRelationListRes
             })
         return result;
 }
+
+// *** 특정 유저 게시물 리스트 요청
+const GET_USER_BOARD_LIST_URL = (email:string) => `${API_DOMAIN}/board/user-board-list/${email}`;
+
+export const getUserBoardListRequest = async (email: string) => {
+    const result = await axios.get(GET_USER_BOARD_LIST_URL(email))
+        .then(response => {
+            const responseBody: GetUserBoardListResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+            return null;
+            }
+
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        })
+    return result;
+};
+
+// *** 유저 정보 요청
+const GET_USER_URL = (email: string) => `${API_DOMAIN}/user/${email}`;
+
+export const getUserRequest = async (email: string) => {
+    const result = await axios.get(GET_USER_URL(email))
+        .then(response => {
+            const responseBody: GetUserResponseDto = response.data;
+                return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+            return null;
+            }
+
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        })
+    return result;
+};
+
+// *** 닉네임 수정 요청
+const PATCH_NICKNAME_URL = () => `${API_DOMAIN}/user/nickname`;
+
+export const patchNicknameRequest: (requestBody: PatchNicknameRequestDto, accessToken: string) => Promise<PatchNicknameResponseDto | ResponseDto | null> 
+    = async function(requestBody: PatchNicknameRequestDto, accessToken: string) {
+        const result = await axios.patch(PATCH_NICKNAME_URL(), requestBody, authorization(accessToken))
+            .then(response => {
+                const responseBody: PatchNicknameResponseDto = response.data;
+                return responseBody;
+            })
+            .catch(error => {
+                if (!error.response) {
+                    alert(t('response-message.Network Error.'));
+                return null;
+                }
+
+                const responseBody: ResponseDto = error.response.data;
+                return responseBody;
+            })
+        return result;
+}
+
+// *** 프로필 이미지 수정 요청
+const PATCH_PROFILE_IMAGE_URL = () => `${API_DOMAIN}/user/profile-image`;
+
+export const patchProfileImageRequest = async (requestBody: PatchProfileImageRequestDto , accessToken: string) => {
+    const result = await axios.patch(PATCH_PROFILE_IMAGE_URL(), requestBody, authorization(accessToken))
+        .then(response => {
+            const responseBody: PatchProfileImageResponseDto = response.data;
+            return responseBody;
+        })
+        .catch(error => {
+            if (!error.response) {
+                alert(t('response-message.Network Error.'));
+            return null;
+            }
+
+            const responseBody: ResponseDto = error.response.data;
+            return responseBody;
+        })
+    return result;
+};

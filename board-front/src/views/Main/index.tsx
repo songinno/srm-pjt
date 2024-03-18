@@ -16,7 +16,7 @@ export default function Main() {
   //                  State : 월간 TOP3 게시물 리스트 상태         //
   const [ top3BoardList, setTop3BoardList ] = useState<BoardListItem[]>([]);
 
-  //                  State : 최신 게시물 리스트 상태(임시)                   //
+  //                  State : 최신 게시물 리스트 상태                   //
   const [ latestBoardList, setLatestBoardList ] = useState<BoardListItem[]>([]);
 
   //                  State : 인기 검색어 리스트 상태                   //
@@ -29,6 +29,7 @@ export default function Main() {
   };
 
   //                  State : 서버 비동기 요청 오류 및 메시지 상태               //
+  // TODO
   const [requestError, setRequestError] = useState<RequestError>({
     isError: false,
     errorMessage: ''

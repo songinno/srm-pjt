@@ -1,7 +1,8 @@
 {
     "general-message": {
         "Cookie does not exist.": "쿠키가 존재하지 않습니다.",
-        "This service requires login.": "로그인이 필요한 서비스입니다."
+        "This service requires login.": "로그인이 필요한 서비스입니다.",
+        "Nickname is required entry.": "닉네임 입력은 필수입니다."
     },
 
     "response-message": {
