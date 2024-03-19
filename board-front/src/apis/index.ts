@@ -14,13 +14,9 @@ import { DOMAIN } from "../config";
 // TODO : 모든 요청에서, 각 error 상태에 따라 alert 다르게 해야함
 
 // *** 서버 요청 URL 정보
-// # 개발용
-// const DOMAIN = 'http://localhost:4000';
-
 const API_DOMAIN = `${DOMAIN}/api/v1`;
 
 // *** 로그인 및 회원가입 요청
-
 // Description : 파라미터가 있을 경우, URL에 넣기 위해 함수로 정의
 const SIGN_IN_URL = () => `${API_DOMAIN}/auth/sign-in`;
 const SIGN_UP_URL = () => `${API_DOMAIN}/auth/sign-up`;

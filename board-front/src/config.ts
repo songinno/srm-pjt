@@ -1,1 +1,0 @@
-export const DOMAIN = 'http://ec2-3-39-15-140.ap-northeast-2.compute.amazonaws.com:4000';
