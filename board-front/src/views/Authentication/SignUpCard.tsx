@@ -8,7 +8,6 @@ import { ResponseDto } from "apis/response";
 import { ResponseCode } from "types/enum";
 
 import { useTranslation } from "react-i18next";
-import i18n from 'locales/i18n';
 
 //                  Interface : input의 name 속성별 타입                  //
 export interface InputName {
@@ -196,6 +195,12 @@ export const SignUpCard = (props: Props) => {
 
             // ! 핸드폰 번호 -> 우편번호 검색 클릭
             if (name === 'telNumber') {
+                onAddressButtonClickHandler();
+                break;
+            }
+
+            // ! 주소 -> 우편번호 검색 클릭
+            if (name === 'address') {
                 onAddressButtonClickHandler();
                 break;
             }
@@ -463,6 +468,7 @@ export const SignUpCard = (props: Props) => {
         }
 
         // ! 회원가입 성공 시
+        alert(t("general-message.Sign up is complete."));
         setAuthView('sign-in');
     };
 

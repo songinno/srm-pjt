@@ -93,16 +93,19 @@ export const UserPageBottom = (props: Props) => {
                         </div>
                     </div>
                 </div>
-                <div className="user-bottom-pagination-box">
-                    <Pagination 
-                        currentPage={currentPage}
-                        currentSection={currentSection}
-                        setCurrentPage={setCurrentPage}
-                        setCurrentSection={setCurrentSection}
-                        viewPageList={viewPageList}
-                        totalSection={totalSection}
-                    />
-                </div>
+                {userBoardCount && (
+                    <div className="user-bottom-pagination-box">
+                        <Pagination 
+                            currentPage={currentPage}
+                            currentSection={currentSection}
+                            setCurrentPage={setCurrentPage}
+                            setCurrentSection={setCurrentSection}
+                            viewPageList={viewPageList}
+                            totalSection={totalSection}
+                        />
+                    </div>
+                )}
+                
             </div>
         </div>
     );

@@ -39,7 +39,7 @@ export const MainBottom = (props: Props) => {
     //                  Effect : 메인 하단 화면 마운트 시, 실행되는 함수                    //
     // Description : 페이지네이션을 위한 처리
     useEffect(() => {
-        setTotalList([...latestBoardList]);
+        setTotalList(latestBoardList);
     }, [latestBoardList]);
 
     //                  Render : 메인 화면 하단 컴포넌트 렌더링                   //
@@ -63,16 +63,18 @@ export const MainBottom = (props: Props) => {
                         </div>
                     </div>
                 </div>
-                <div className="main-bottom-pagination-box">
-                    <Pagination 
-                        currentPage={currentPage}
-                        currentSection={currentSection}
-                        setCurrentPage={setCurrentPage}
-                        setCurrentSection={setCurrentSection}
-                        viewPageList={viewPageList}
-                        totalSection={totalSection}
-                    />
-                </div>
+                {latestBoardList.length && (
+                    <div className="main-bottom-pagination-box">
+                        <Pagination 
+                            currentPage={currentPage}
+                            currentSection={currentSection}
+                            setCurrentPage={setCurrentPage}
+                            setCurrentSection={setCurrentSection}
+                            viewPageList={viewPageList}
+                            totalSection={totalSection}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

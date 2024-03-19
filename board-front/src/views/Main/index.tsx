@@ -60,7 +60,7 @@ export default function Main() {
     // ! 월간 TOP3 게시물 리스트 상태 업데이트
     const { top3List } = responseBody as GetTop3BoardListResponseDto;
     
-    setTop3BoardList([...top3List]);
+    setTop3BoardList(top3List);
   };
 
   //                  Function : 최신 게시물 리스트 요청에 대한 응답 처리 함수                //
@@ -84,7 +84,7 @@ export default function Main() {
 
     // ! 최신 게시물 리스트 상태 업데이트
     const { latestList } = responseBody as GetLatestBoardListResponseDto;
-    setLatestBoardList([...latestList]);
+    setLatestBoardList(latestList);
   };
 
   //                  Function : 인기 검색어 리스트 요청에 대한 응답 처리 함수                //
@@ -118,7 +118,7 @@ export default function Main() {
       getTop3BoardListRequest().then(getTop3BoardListResponse), 
       getLatestBoardListRequest().then(getLatestBoardListResponse),
       getPopularListRequest().then(getPopularListResponse)
-    ])
+    ]);
   }, []);
 
   //                  Render : 메인 화면 컴포넌트 렌더링                   //

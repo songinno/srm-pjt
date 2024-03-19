@@ -55,14 +55,31 @@ const usePagination = <T>(viewCount: number, sectionCount: number) => {
             totalPageList.push(page);
         }
 
-        setTotalPageList([...totalPageList]);
+        setTotalPageList(totalPageList);
         setTotalSection(totalSection);
 
         setCurrentPage(1);
         setCurrentSection(1);
 
-        getViewList();
-        getViewPageList();
+        // getViewList();
+        // TODO
+        const firstIndexV = viewCount * (currentPage - 1);
+        const lastIndexV = (viewCount * currentPage); 
+
+        const tmpViewList = totalList.slice(firstIndexV, (totalList.length > lastIndexV ? lastIndexV : totalList.length));
+        setViewList([...tmpViewList]);
+
+
+        // getViewPageList();
+        // TODO
+        const firstIndexP = sectionCount * (currentSection - 1);
+        const lastIndexP = sectionCount * currentSection;
+        
+        const tmpViewPageList = totalPageList.slice(firstIndexP, (totalPageList.length > lastIndexP ? lastIndexP : totalPageList.length));
+
+        setViewPageList([...tmpViewPageList]);
+
+
     }, [totalList]);
 
     //                  Effect : Current Page 변경 시 마다 실행되는 함수                  //
