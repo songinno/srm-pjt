@@ -9,11 +9,13 @@ import { t } from 'i18next';
 import GetPopularListResponseDto from './response/search/get-popular-list.response.dto';
 import { GetRelationListResponseDto } from './response/search';
 import { PatchNicknameRequestDto, PatchProfileImageRequestDto } from './request/user';
+import { DOMAIN } from "../config";
 
 // TODO : 모든 요청에서, 각 error 상태에 따라 alert 다르게 해야함
 
 // *** 서버 요청 URL 정보
-const DOMAIN = 'http://localhost:4000';
+// # 개발용
+// const DOMAIN = 'http://localhost:4000';
 
 const API_DOMAIN = `${DOMAIN}/api/v1`;
 

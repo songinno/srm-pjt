@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 // import { latestBoardListMock, top3BoardListMock, commentListMock, favoriteListMock } from 'mocks';
 // import BoardItem from 'components/BoardItem';
