@@ -300,13 +300,15 @@ export const BoardDetailBottom = memo((props: BoardDetailProps) => {
                         </div>
                     </div>
                     <div className="divider"></div>
-                    <div className="board-detail-bottom-comment-pagination-box">
-                        <Pagination  
-                            currentPage={currentPage} currentSection={currentSection} 
-                            setCurrentPage={setCurrentPage} setCurrentSection={setCurrentSection}
-                            viewPageList={viewPageList} totalSection={totalSection}
-                        />
-                    </div>
+                    {(!!totalCommentCount) && (
+                        <div className="board-detail-bottom-comment-pagination-box">
+                            <Pagination  
+                                currentPage={currentPage} currentSection={currentSection} 
+                                setCurrentPage={setCurrentPage} setCurrentSection={setCurrentSection}
+                                viewPageList={viewPageList} totalSection={totalSection}
+                            />
+                        </div>
+                    )}
                     {loginUser && (
                         <div className="board-detail-bottom-comment-input-box">
                             <div className="board-detail-bottom-comment-input-container">

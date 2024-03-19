@@ -146,7 +146,7 @@ export default function Search() {
 						</div>
 					</div>
 				</div>
-				{searchListCount && (
+				{(!!searchListCount) && (
 					<div className="search-pagination-box">
 						<Pagination 
 							currentPage={currentPage}

@@ -3,7 +3,7 @@ import { Pagination } from 'components/Pagination';
 import { BOARD_PATH, BOARD_WRITE_PATH, USER_PATH } from 'constant';
 import { usePagination } from 'hooks';
 import { t } from 'i18next';
-import { boardMock, latestBoardListMock } from 'mocks';
+// import { boardMock, latestBoardListMock } from 'mocks';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useLoginUserStore } from 'stores';
@@ -93,7 +93,7 @@ export const UserPageBottom = (props: Props) => {
                         </div>
                     </div>
                 </div>
-                {userBoardCount && (
+                {(!!userBoardCount) && (
                     <div className="user-bottom-pagination-box">
                         <Pagination 
                             currentPage={currentPage}

@@ -63,7 +63,7 @@ export const MainBottom = (props: Props) => {
                         </div>
                     </div>
                 </div>
-                {latestBoardList.length && (
+                {(!!latestBoardList.length) && (
                     <div className="main-bottom-pagination-box">
                         <Pagination 
                             currentPage={currentPage}
