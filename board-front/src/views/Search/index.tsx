@@ -96,6 +96,9 @@ export default function Search() {
 	//					Effect : 검색어 변경 시 마다 실행					//
 	useEffect(() => {
 		if (!searchWord) return;
+
+		window.scrollTo(0, 0);
+
 		Promise.all([
 			getSearchListRequest(searchWord, preSearchWord).then(getSearchListResponse),
 			getRelationListRequest(searchWord).then(getRelationListResponse)

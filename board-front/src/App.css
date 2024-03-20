@@ -186,6 +186,14 @@ textarea {
     background-image: url(assets/images/logo-light.png);
 }
 
+.notion-icon {
+    background-image: url(assets/images/nontion.png);
+}
+
+.github-icon {
+    background-image: url(assets/images/github.png);
+}
+
 .insta-icon {
     background-image: url(assets/images/insta.png);
 }
