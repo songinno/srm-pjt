@@ -7,7 +7,7 @@ export default function Footer() {
 
 //                  Event Handler : 노션 아이콘 버튼 클릭 이벤트 처리                   //
 const onNotionIconButtonClickHandler = () => {
-    window.open("https://powerful-homburg-7c8.notion.site/REST-API-011a3c736e7242c296d623b96154d276");
+    window.open("https://powerful-homburg-7c8.notion.site/Spring-React-MySQL-2eb17550ad91498190502f222359bd3f");
 };
 
 //                  Event Handler : 노션 아이콘 버튼 클릭 이벤트 처리                   //
