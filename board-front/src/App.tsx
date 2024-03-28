@@ -30,6 +30,7 @@ import { User as UserType } from 'types/interface';
 import { useTranslation } from 'react-i18next';
 import ReactGA from "react-ga";
 import { GOOGLE_ANALYTICS_TRACKING_ID } from 'config';
+import { createBrowserHistory } from 'history';
 
 //					Component : Application 컴포넌트           //
 function App() {
@@ -40,8 +41,8 @@ function App() {
   //					State : 쿠키 상태         //
   const [cookies, setCookie] = useCookies();
 
-  //					State : Path 상태					//
-  const { pathname, search } = useLocation();
+  //					State : history 상태					//
+  const history = createBrowserHistory();
 
   //					State : Google Analytics Tracking ID 상태					//
   const [gaTrackingId, setGaTrackingId] = useState<string | undefined>(GOOGLE_ANALYTICS_TRACKING_ID);
@@ -68,22 +69,15 @@ function App() {
     setLoginUser(newLoginUser);
   };
 
-  //					Effect : 마운트 시 실행 - Google Analytics 연동					//
-  useEffect(() => {
-	// ! 환경 변수에 저장된 추적 ID
-
-	
-	if (!gaTrackingId) setGaTrackingId(GOOGLE_ANALYTICS_TRACKING_ID);
-	if (!gaTrackingId) return;
-	// ! react-ga 초기화 및 degug 사용
-	ReactGA.initialize(gaTrackingId, {debug: true});
-  }, [])
-
-  //					Effect : location 변경 시 마다 실행					//
-  useEffect(() => {
-	// ! 추적하려는 page 설정
-	ReactGA.pageview(pathname + search);
-  }, [pathname, search]);
+	//					Effect : 마운트 시, Google Analytics 연동					//
+	useEffect(() => {
+		ReactGA.initialize(GOOGLE_ANALYTICS_TRACKING_ID, { debug: true });
+		
+		history.listen((response) => {
+			ReactGA.set({ page: response.location.pathname });
+			ReactGA.pageview(response.location.pathname + response.location.search);
+		});
+	}, []);
 
   //					Effect : Access 토큰 쿠키 값이 변경될 때 마다 실행되는 함수					//
   // Description : Access 토큰 값이 변경되는 상황
@@ -111,20 +105,20 @@ function App() {
   // Description : 게시물 수정 화면) 경로 - '/board/update/:boardNumber', 컴포넌트명 - BoardUpdate  //
  
   return (
-    <Routes>
-      <Route element={<Container/>}>
-        <Route path={MAIN_PATH()} element={<Main />} />
-        <Route path={AUTH_PATH()} element={<Authentication />} />
-        <Route path={SEARCH_PATH(':searchWord')} element={<Search />} />
-        <Route path={USER_PATH(':userEmail')} element={<User />} />
-        <Route path={BOARD_PATH()}>
-          <Route path={BOARD_WRITE_PATH()} element={<BoardWrite />} />
-          <Route path={BOARD_DETAIL_PATH(':boardNumber')} element={<BoardDetail />} />
-          <Route path={BOARD_UPDATE_PATH(':boardNumber')} element={<BoardUpdate />} />
-        </Route>
-        <Route path='*' element={(<h1>404 Not Found</h1>)}></Route>
-      </Route>
-    </Routes>
+	<Routes>
+		<Route element={<Container/>}>
+			<Route path={MAIN_PATH()} element={<Main />} />
+			<Route path={AUTH_PATH()} element={<Authentication />} />
+			<Route path={SEARCH_PATH(':searchWord')} element={<Search />} />
+			<Route path={USER_PATH(':userEmail')} element={<User />} />
+			<Route path={BOARD_PATH()}>
+			<Route path={BOARD_WRITE_PATH()} element={<BoardWrite />} />
+			<Route path={BOARD_DETAIL_PATH(':boardNumber')} element={<BoardDetail />} />
+			<Route path={BOARD_UPDATE_PATH(':boardNumber')} element={<BoardUpdate />} />
+			</Route>
+			<Route path='*' element={(<h1>404 Not Found</h1>)}></Route>
+		</Route>
+	</Routes>
   );
 }
 
