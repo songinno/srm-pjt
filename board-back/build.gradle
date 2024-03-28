@@ -44,6 +44,12 @@ dependencies {
 
 	// ! MariaDB
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+	// ! Spring Batch
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+	// ! Quartz
+	implementation 'org.springframework.boot:spring-boot-starter-quartz'
 }
 
 test {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 // import { latestBoardListMock, top3BoardListMock, commentListMock, favoriteListMock } from 'mocks';
 // import BoardItem from 'components/BoardItem';
@@ -7,7 +7,7 @@ import './App.css';
 // import FavoriteItem from 'components/FavoriteItem';
 // import InputBox from 'components/InputBox';
 // import Footer from 'layouts/Footer';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Main from 'views/Main';
 import Authentication from 'views/Authentication';
 import Search from 'views/Search';
@@ -28,20 +28,27 @@ import { ResponseDto } from 'apis/response';
 import { ResponseCode } from 'types/enum';
 import { User as UserType } from 'types/interface';
 import { useTranslation } from 'react-i18next';
+import ReactGA from "react-ga";
 
-//           Component : Application 컴포넌트           //
+//					Component : Application 컴포넌트           //
 function App() {
 
-  //          State : 로그인 유저 전역 상태         //
+  //					State : 로그인 유저 전역 상태         //
   const { loginUser, setLoginUser, resetLoginUser } = useLoginUserStore();
 
-  //          State : 쿠키 상태         //
+  //					State : 쿠키 상태         //
   const [cookies, setCookie] = useCookies();
 
-  //          Function : 번역 함수          //
+  //					State : Path 상태					//
+  const { pathname, search } = useLocation();
+
+  //					State : Google Analytics Tracking ID 상태					//
+  const [gaTrackingId, setGaTrackingId] = useState<string | undefined>(undefined);
+
+  //					Function : 번역 함수          //
   const { t } = useTranslation();
   
-  //          Function : 로그인 유저 정보 Response 처리 함수          //
+  //					Function : 로그인 유저 정보 Response 처리 함수          //
   const getSignInUserResponse = (responseBody: GetSignInUserResponseDto | ResponseDto | null) => {
     
     if (!responseBody) return;
@@ -60,7 +67,22 @@ function App() {
     setLoginUser(newLoginUser);
   };
 
-  //          Effect : Access 토큰 쿠키 값이 변경될 때 마다 실행되는 함수         //
+  //					Effect : 마운트 시 실행 - Google Analytics 연동					//
+  useEffect(() => {
+	// ! 환경 변수에 저장된 추적 ID
+	setGaTrackingId(process.env.REACT_APP_GA_TRACKING_ID);
+	if (!gaTrackingId) return;
+	// ! react-ga 초기화 및 degug 사용
+	ReactGA.initialize(gaTrackingId, {debug: true});
+  }, [])
+
+  //					Effect : location 변경 시 마다 실행					//
+  useEffect(() => {
+	// ! 추적하려는 page 설정
+	ReactGA.pageview(pathname + search);
+  }, [pathname, search]);
+
+  //					Effect : Access 토큰 쿠키 값이 변경될 때 마다 실행되는 함수					//
   // Description : Access 토큰 값이 변경되는 상황
   // 1. 로그인 카드 컴포넌트 - 로그인 버튼 클릭해서 서버에 로그인 요청 후, 생성된 토큰을 받은 경우
   // 2. Header 컴포넌트 - 로그아웃 버튼 클릭 시
