@@ -29,6 +29,7 @@ import { ResponseCode } from 'types/enum';
 import { User as UserType } from 'types/interface';
 import { useTranslation } from 'react-i18next';
 import ReactGA from "react-ga";
+import { GOOGLE_ANALYTICS_TRACKING_ID } from 'config';
 
 //					Component : Application 컴포넌트           //
 function App() {
@@ -43,7 +44,7 @@ function App() {
   const { pathname, search } = useLocation();
 
   //					State : Google Analytics Tracking ID 상태					//
-  const [gaTrackingId, setGaTrackingId] = useState<string | undefined>(undefined);
+  const [gaTrackingId, setGaTrackingId] = useState<string | undefined>(GOOGLE_ANALYTICS_TRACKING_ID);
 
   //					Function : 번역 함수          //
   const { t } = useTranslation();
@@ -70,9 +71,9 @@ function App() {
   //					Effect : 마운트 시 실행 - Google Analytics 연동					//
   useEffect(() => {
 	// ! 환경 변수에 저장된 추적 ID
-	setGaTrackingId(process.env.REACT_APP_GA_TRACKING_ID);
-	console.log("gaTrackingId: " + gaTrackingId);
+
 	
+	if (!gaTrackingId) setGaTrackingId(GOOGLE_ANALYTICS_TRACKING_ID);
 	if (!gaTrackingId) return;
 	// ! react-ga 초기화 및 degug 사용
 	ReactGA.initialize(gaTrackingId, {debug: true});
