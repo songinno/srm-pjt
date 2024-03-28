@@ -71,6 +71,8 @@ function App() {
   useEffect(() => {
 	// ! 환경 변수에 저장된 추적 ID
 	setGaTrackingId(process.env.REACT_APP_GA_TRACKING_ID);
+	console.log("gaTrackingId: " + gaTrackingId);
+	
 	if (!gaTrackingId) return;
 	// ! react-ga 초기화 및 degug 사용
 	ReactGA.initialize(gaTrackingId, {debug: true});
