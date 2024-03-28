@@ -71,8 +71,8 @@ function App() {
 
 	//					Effect : 마운트 시, Google Analytics 연동					//
 	useEffect(() => {
-		ReactGA.initialize(GOOGLE_ANALYTICS_TRACKING_ID, { debug: true });
-		
+		ReactGA.initialize(GOOGLE_ANALYTICS_TRACKING_ID, { debug: false });
+
 		history.listen((response) => {
 			ReactGA.set({ page: response.location.pathname });
 			ReactGA.pageview(response.location.pathname + response.location.search);
