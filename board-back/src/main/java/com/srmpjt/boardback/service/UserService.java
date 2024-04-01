@@ -6,7 +6,6 @@ import com.srmpjt.boardback.dto.response.user.GetSignInUserResponseDto;
 import com.srmpjt.boardback.dto.response.user.GetUserResponseDto;
 import com.srmpjt.boardback.dto.response.user.PatchNicknameResponseDto;
 import com.srmpjt.boardback.dto.response.user.PatchProfileImageResponseDto;
-import com.srmpjt.boardback.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {

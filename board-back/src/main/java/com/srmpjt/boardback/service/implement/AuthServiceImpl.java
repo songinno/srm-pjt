@@ -5,14 +5,13 @@ import com.srmpjt.boardback.dto.request.auth.SignUpRequestDto;
 import com.srmpjt.boardback.dto.response.ResponseDto;
 import com.srmpjt.boardback.dto.response.auth.SignInResponseDto;
 import com.srmpjt.boardback.dto.response.auth.SignUpResponseDto;
-import com.srmpjt.boardback.entity.UserEntity;
+import com.srmpjt.boardback.entity.board.UserEntity;
 import com.srmpjt.boardback.provider.JwtProvider;
-import com.srmpjt.boardback.repository.UserRepository;
+import com.srmpjt.boardback.repository.board.UserRepository;
 import com.srmpjt.boardback.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

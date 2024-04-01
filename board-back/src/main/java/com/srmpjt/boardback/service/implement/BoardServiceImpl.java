@@ -1,13 +1,12 @@
 package com.srmpjt.boardback.service.implement;
 
-import com.srmpjt.boardback.dto.object.CommentListItem;
 import com.srmpjt.boardback.dto.request.board.PatchBoardRequestDto;
 import com.srmpjt.boardback.dto.request.board.PostBoardRequestDto;
 import com.srmpjt.boardback.dto.request.board.PostCommentRequestDto;
 import com.srmpjt.boardback.dto.response.ResponseDto;
 import com.srmpjt.boardback.dto.response.board.*;
-import com.srmpjt.boardback.entity.*;
-import com.srmpjt.boardback.repository.*;
+import com.srmpjt.boardback.entity.board.*;
+import com.srmpjt.boardback.repository.board.*;
 import com.srmpjt.boardback.repository.resultSet.GetBoardResultSet;
 import com.srmpjt.boardback.repository.resultSet.GetCommentListResultSet;
 import com.srmpjt.boardback.repository.resultSet.GetFavoriteListResultSet;

@@ -1,7 +1,6 @@
-package com.srmpjt.boardback.repository;
+package com.srmpjt.boardback.repository.board;
 
-import com.srmpjt.boardback.entity.SearchLogEntity;
-import com.srmpjt.boardback.entity.UserEntity;
+import com.srmpjt.boardback.entity.board.SearchLogEntity;
 import com.srmpjt.boardback.repository.resultSet.GetPopularListResultSet;
 import com.srmpjt.boardback.repository.resultSet.GetRelationListResultSet;
 import org.springframework.data.jpa.repository.JpaRepository;

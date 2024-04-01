@@ -1,6 +1,6 @@
-package com.srmpjt.boardback.repository;
+package com.srmpjt.boardback.repository.board;
 
-import com.srmpjt.boardback.entity.BoardListViewEntity;
+import com.srmpjt.boardback.entity.board.BoardListViewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

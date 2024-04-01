@@ -1,6 +1,6 @@
-package com.srmpjt.boardback.repository;
+package com.srmpjt.boardback.repository.board;
 
-import com.srmpjt.boardback.entity.CommentEntity;
+import com.srmpjt.boardback.entity.board.CommentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

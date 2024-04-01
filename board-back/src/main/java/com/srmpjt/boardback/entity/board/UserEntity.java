@@ -1,4 +1,4 @@
-package com.srmpjt.boardback.entity;
+package com.srmpjt.boardback.entity.board;
 
 import com.srmpjt.boardback.dto.request.auth.SignUpRequestDto;
 import lombok.*;

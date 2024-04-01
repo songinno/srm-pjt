@@ -3,7 +3,7 @@ package com.srmpjt.boardback.dto.response.user;
 import com.srmpjt.boardback.common.ResponseCode;
 import com.srmpjt.boardback.common.ResponseMessage;
 import com.srmpjt.boardback.dto.response.ResponseDto;
-import com.srmpjt.boardback.entity.UserEntity;
+import com.srmpjt.boardback.entity.board.UserEntity;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
-package com.srmpjt.boardback.repository;
+package com.srmpjt.boardback.repository.board;
 
-import com.srmpjt.boardback.entity.BoardEntity;
+import com.srmpjt.boardback.entity.board.BoardEntity;
 import com.srmpjt.boardback.repository.resultSet.GetBoardResultSet;
 import com.srmpjt.boardback.repository.resultSet.GetCommentListResultSet;
 import com.srmpjt.boardback.repository.resultSet.GetFavoriteListResultSet;
