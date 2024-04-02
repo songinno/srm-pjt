@@ -6,16 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Entity
+@Entity(name = "hourly_search_word_count_statistics")
+@Table(name = "hourly_search_word_count_statistics")
 public class HourlySearchWordCountStatisticsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +25,9 @@ public class HourlySearchWordCountStatisticsEntity {
 
     @CreationTimestamp
     private LocalDateTime createDate;
+
+    public HourlySearchWordCountStatisticsEntity(String searchWord, int searchCount) {
+        this.searchWord = searchWord;
+        this.searchCount = searchCount;
+    }
 }

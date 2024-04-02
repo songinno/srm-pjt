@@ -1,10 +1,12 @@
 package com.srmpjt.boardback.config.database;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -27,16 +29,6 @@ import java.util.Map;
         transactionManagerRef = "statisticsTransactionManager"
 )
 public class StatisticsDatabaseConfig {
-    // * DataSource
-    @Bean
-    @ConfigurationProperties("spring.datasource.statistics")
-    DataSource statisticsDataSource() {
-        DataSourceBuilder builder = DataSourceBuilder.create();
-        builder.type(HikariDataSource.class);
-
-        return builder.build();
-    }
-
     // * EntityManager
     @Bean
     public LocalContainerEntityManagerFactoryBean statisticsEntityManagerFactory(
@@ -48,9 +40,12 @@ public class StatisticsDatabaseConfig {
         properties.put("hibernate.show_sql", "true");
         properties.put("hibernate.format_sql", "true");
         properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("hibernate.physical_naming_strategy", CamelCaseToUnderscoresNamingStrategy.class.getName());
+        properties.put("hibernate.implicit_naming_strategy", SpringImplicitNamingStrategy.class.getName());
 
         return builder
                 .dataSource(dataSource)
+                .persistenceUnit("statisticsEm")
                 .packages("com.srmpjt.boardback.entity.statistics")
                 .properties(properties)
                 .build();
