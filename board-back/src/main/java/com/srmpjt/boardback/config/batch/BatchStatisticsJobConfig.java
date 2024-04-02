@@ -1,7 +1,9 @@
 package com.srmpjt.boardback.config.batch;
 
 import com.srmpjt.boardback.batch.UniqueRunIdIncrementer;
+import com.srmpjt.boardback.entity.board.BoardEntity;
 import com.srmpjt.boardback.entity.board.SearchLogEntity;
+import com.srmpjt.boardback.entity.statistics.HourlyBoardViewCountStatisticsEntity;
 import com.srmpjt.boardback.entity.statistics.HourlySearchWordCountStatisticsEntity;
 import com.srmpjt.boardback.util.CustomBeanUtils;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,9 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.FlowBuilder;
+import org.springframework.batch.core.job.flow.Flow;
+import org.springframework.batch.core.job.flow.support.SimpleFlow;
 import org.springframework.batch.core.step.tasklet.TaskletStep;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.JpaItemWriter;
@@ -18,7 +23,6 @@ import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilde
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -29,7 +33,7 @@ import javax.persistence.EntityManagerFactory;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class BatchSearchWordCountJobConfig {
+public class BatchStatisticsJobConfig {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
@@ -49,7 +53,23 @@ public class BatchSearchWordCountJobConfig {
                 .build();
     }
 
+    // * Flow를 이용한 Step 병렬 처리
+    @Bean
+    public Flow flow1() {
+        return new FlowBuilder<SimpleFlow>("flow1")
+                .start(searchWordCountStatisticsStep())
+                .build();
+    }
+
+    @Bean
+    public Flow flow2() {
+        return new FlowBuilder<SimpleFlow>("flow2")
+                .start(boardViewCountStatisticsStep())
+                .build();
+    }
+
     // * Step
+    // ! 인기 검색어 TOP 10
     @Bean
     public Step searchWordCountStatisticsStep() {
         TaskletStep step = stepBuilderFactory.get("searchWordCountStatisticsStep")
@@ -62,12 +82,25 @@ public class BatchSearchWordCountJobConfig {
         return step;
     }
 
+    // ! 인기 게시글 TOP 10
+    @Bean
+    public Step boardViewCountStatisticsStep() {
+        TaskletStep step = stepBuilderFactory.get("boardViewCountStatisticsStep")
+                .<BoardEntity, HourlyBoardViewCountStatisticsEntity>chunk(pageSize)
+                .reader(boardViewCountStatisticsItemReader())
+                .processor(boardViewCountStatisticsItemProcessor())
+                .writer(boardViewCountStatisticsItemWriter())
+                .build();
+        step.setTransactionManager(CustomBeanUtils.getTransactionManagerBean("statisticsTransactionManager");
+        return step;
+    }
+
     // * ItemReader
+    // ! 인기 검색어 TOP 10
     @Bean
     public JpaPagingItemReader<SearchLogEntity> searchWordCountStatisticsItemReader() {
 
         String hql = "select sl.searchWord, count(*) as search_count from search_log sl group by sl.searchWord order by search_count desc";
-
 
         return new JpaPagingItemReaderBuilder<SearchLogEntity>()
                 .name("searchWordCountStatisticsItemReader")
@@ -78,7 +111,22 @@ public class BatchSearchWordCountJobConfig {
                 .build();
     }
 
+    // ! 인기 게시글 TOP 10
+    @Bean
+    public JpaPagingItemReader<BoardEntity> boardViewCountStatisticsItemReader() {
+        String hql = "select board_number, view_count from board order by view_count desc";
+
+        return new JpaPagingItemReaderBuilder<BoardEntity>()
+                .name("boardViewCountStatisticsItemReader")
+                .entityManagerFactory(entityManagerFactory)
+                .pageSize(pageSize)
+                .queryString(hql)
+                .maxItemCount(10)
+                .build();
+    }
+
     // * ItemProcessor
+    // ! 인기 검색어 TOP 10
     @Bean
     public ItemProcessor searchWordCountStatisticsItemProcessor() {
         return items -> { // # [VARCHAR(String), BIGINT(Long)]
@@ -90,10 +138,31 @@ public class BatchSearchWordCountJobConfig {
         };
     }
 
+    // ! 인기 게시글 TOP 10
+    @Bean
+    public ItemProcessor boardViewCountStatisticsItemProcessor() {
+        return items -> { // # [ Long, Long ]
+            Object[] arrayOfObjects = (Object[]) items;
+            int boardNumber = Integer.parseInt(String.valueOf(arrayOfObjects[0]));
+            int viewCount = Integer.parseInt(String.valueOf(arrayOfObjects[1]));
+
+            return new HourlyBoardViewCountStatisticsEntity(boardNumber, viewCount);
+        };
+    }
+
     // * ItemWriter
+    // ! 인기 검색어 TOP 10
     @Bean
     public JpaItemWriter<HourlySearchWordCountStatisticsEntity> searchWordCountStatisticsItemWriter() {
         JpaItemWriter<HourlySearchWordCountStatisticsEntity> jpaItemWriter = new JpaItemWriter<>();
+        jpaItemWriter.setEntityManagerFactory(outputEntityManagerFactory);
+        return jpaItemWriter;
+    }
+
+    // ! 인기 게시글 TOP 10
+    @Bean
+    public JpaItemWriter<HourlyBoardViewCountStatisticsEntity> boardViewCountStatisticsItemWriter() {
+        JpaItemWriter<HourlyBoardViewCountStatisticsEntity> jpaItemWriter = new JpaItemWriter<>();
         jpaItemWriter.setEntityManagerFactory(outputEntityManagerFactory);
         return jpaItemWriter;
     }

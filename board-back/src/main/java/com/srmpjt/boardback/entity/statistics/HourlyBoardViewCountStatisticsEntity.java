@@ -25,4 +25,9 @@ public class HourlyBoardViewCountStatisticsEntity {
 
     @CreationTimestamp
     private LocalDateTime createDate;
+
+    public HourlyBoardViewCountStatisticsEntity(int boardNumber, int viewCount) {
+        this.boardNumber = boardNumber;
+        this.viewCount = viewCount;
+    }
 }

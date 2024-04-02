@@ -1,9 +1,7 @@
 package com.srmpjt.boardback.entity.board;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -17,7 +15,7 @@ public class ImageEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int sequence;
 
-    private int boardNumber;
+    private int boardNumber = 0;
 
     private String image;
 

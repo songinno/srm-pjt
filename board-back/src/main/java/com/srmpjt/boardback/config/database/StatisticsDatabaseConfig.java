@@ -39,6 +39,7 @@ public class StatisticsDatabaseConfig {
         Map<String, String> properties = new HashMap<>();
         properties.put("hibernate.show_sql", "true");
         properties.put("hibernate.format_sql", "true");
+
         properties.put("hibernate.hbm2ddl.auto", "update");
         properties.put("hibernate.physical_naming_strategy", CamelCaseToUnderscoresNamingStrategy.class.getName());
         properties.put("hibernate.implicit_naming_strategy", SpringImplicitNamingStrategy.class.getName());
@@ -50,7 +51,6 @@ public class StatisticsDatabaseConfig {
                 .properties(properties)
                 .build();
     }
-
 
     // * Transaction Setting
     @Bean
