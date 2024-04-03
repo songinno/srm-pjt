@@ -36,19 +36,24 @@ import javax.persistence.EntityManagerFactory;
 @Configuration
 @RequiredArgsConstructor
 public class BatchStatisticsJobConfig {
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final JobBuilderFactory jobBuilderFactory;
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
     @Qualifier("statisticsEntityManagerFactory")
     private final EntityManagerFactory outputEntityManagerFactory;
+
+    // ! Job 이름
+    public static final String BATCH_JOB_NAME = "batchStatisticsJob";
 
     // * 한 번에 처리할 Item 개수
     private int pageSize = 10;
 
     // * Job
     @Bean
-    public Job searchWordCountStatisticsJob() {
-        return jobBuilderFactory.get("searchWordCountStatisticsJob")
+    public Job batchStatisticsJob() {
+        return jobBuilderFactory.get(BATCH_JOB_NAME)
                 .start(splitFlow())
                 .build()
                 .incrementer(new UniqueRunIdIncrementer())

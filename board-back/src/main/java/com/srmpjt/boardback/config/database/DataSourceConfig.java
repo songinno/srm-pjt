@@ -3,6 +3,7 @@ package com.srmpjt.boardback.config.database;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.autoconfigure.batch.BatchDataSource;
+import org.springframework.boot.autoconfigure.quartz.QuartzDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -58,7 +59,16 @@ public class DataSourceConfig {
     }
 
     @Bean
-    DataSource statisticsDataSource() {
+    public DataSource statisticsDataSource() {
         return new LazyConnectionDataSourceProxy(new HikariDataSource(statisticsHikariConfig()));
     }
+
+    // * Quartz
+//    @Bean
+//    @QuartzDataSource
+//    public DataSource quartzDataSource() {
+//        return DataSourceBuilder.create()
+//                .
+//                .build();
+//    }
 }

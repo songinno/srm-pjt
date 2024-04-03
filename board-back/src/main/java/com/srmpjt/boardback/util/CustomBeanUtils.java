@@ -2,6 +2,7 @@ package com.srmpjt.boardback.util;
 
 import com.srmpjt.boardback.provider.ApplicationContextProvider;
 import lombok.experimental.UtilityClass;
+import org.springframework.batch.core.Job;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -14,5 +15,9 @@ public class CustomBeanUtils {
 
     public static PlatformTransactionManager getTransactionManagerBean(String beanName) {
         return getBean(beanName, PlatformTransactionManager.class);
+    }
+
+    public static Job getBatchJobBean(String beanName) {
+        return getBean(beanName, Job.class);
     }
 }
