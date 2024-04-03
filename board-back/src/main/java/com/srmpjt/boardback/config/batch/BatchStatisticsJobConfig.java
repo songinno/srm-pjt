@@ -23,6 +23,8 @@ import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilde
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -47,13 +49,29 @@ public class BatchStatisticsJobConfig {
     @Bean
     public Job searchWordCountStatisticsJob() {
         return jobBuilderFactory.get("searchWordCountStatisticsJob")
-                .start(searchWordCountStatisticsStep())
+                .start(splitFlow())
+                .build()
                 .incrementer(new UniqueRunIdIncrementer())
                 .preventRestart() // # Job 실패 시, 재시작 막기
                 .build();
     }
 
     // * Flow를 이용한 Step 병렬 처리
+    // ! TaskExecutor(Asynchronous)
+    @Bean
+    public TaskExecutor taskExecutor() {
+        return new SimpleAsyncTaskExecutor("statisticsThread");
+    }
+
+    @Bean
+    public Flow splitFlow() {
+        return new FlowBuilder<SimpleFlow>("splitFlow")
+                .split(taskExecutor())
+                .add(flow1(), flow2())
+                .build();
+    }
+
+
     @Bean
     public Flow flow1() {
         return new FlowBuilder<SimpleFlow>("flow1")
@@ -91,7 +109,7 @@ public class BatchStatisticsJobConfig {
                 .processor(boardViewCountStatisticsItemProcessor())
                 .writer(boardViewCountStatisticsItemWriter())
                 .build();
-        step.setTransactionManager(CustomBeanUtils.getTransactionManagerBean("statisticsTransactionManager");
+        step.setTransactionManager(CustomBeanUtils.getTransactionManagerBean("statisticsTransactionManager"));
         return step;
     }
 
@@ -114,7 +132,7 @@ public class BatchStatisticsJobConfig {
     // ! 인기 게시글 TOP 10
     @Bean
     public JpaPagingItemReader<BoardEntity> boardViewCountStatisticsItemReader() {
-        String hql = "select board_number, view_count from board order by view_count desc";
+        String hql = "select b.boardNumber, b.viewCount from board b order by b.viewCount desc";
 
         return new JpaPagingItemReaderBuilder<BoardEntity>()
                 .name("boardViewCountStatisticsItemReader")
