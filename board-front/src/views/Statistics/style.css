@@ -1,0 +1,27 @@
+
+#statistics-wrapper {
+    background-color:lightgray; /* 임시 */
+
+    width: 1200px;
+    min-width: 1200px;
+    padding: 100px 0;
+    
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+
+    margin: 0px auto;
+}
+
+.statistics-container {
+
+}
+
+.statistics-header {
+
+}
+
+.statistics-box {
+
+}

@@ -16,7 +16,7 @@ import BoardDetail from 'views/Board/Detail';
 import BoardWrite from 'views/Board/Write';
 import BoardUpdate from 'views/Board/Update';
 import Container from 'layouts/Container';
-import { BOARD_DETAIL_PATH, BOARD_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH } from 'constant';
+import { BOARD_DETAIL_PATH, BOARD_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, STATISTICS_PATH } from 'constant';
 import { AUTH_PATH } from 'constant';
 import { SEARCH_PATH } from 'constant';
 import { USER_PATH } from 'constant';
@@ -31,6 +31,7 @@ import { useTranslation } from 'react-i18next';
 import ReactGA from "react-ga";
 import { GOOGLE_ANALYTICS_TRACKING_ID } from 'config';
 import { createBrowserHistory } from 'history';
+import { Statistics } from 'views/Statistics';
 
 //					Component : Application 컴포넌트           //
 function App() {
@@ -111,6 +112,7 @@ function App() {
 			<Route path={AUTH_PATH()} element={<Authentication />} />
 			<Route path={SEARCH_PATH(':searchWord')} element={<Search />} />
 			<Route path={USER_PATH(':userEmail')} element={<User />} />
+      <Route path={STATISTICS_PATH()} element={<Statistics />}/>
 			<Route path={BOARD_PATH()}>
 			<Route path={BOARD_WRITE_PATH()} element={<BoardWrite />} />
 			<Route path={BOARD_DETAIL_PATH(':boardNumber')} element={<BoardDetail />} />

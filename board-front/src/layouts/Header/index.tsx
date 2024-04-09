@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useRef, useState, KeyboardEvent, useEffect } from 'react';
 import './style.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { AUTH_PATH, BOARD_DETAIL_PATH, BOARD_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, SEARCH_PATH, USER_PATH } from 'constant';
+import { AUTH_PATH, BOARD_DETAIL_PATH, BOARD_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, SEARCH_PATH, STATISTICS_PATH, USER_PATH } from 'constant';
 import { useCookies } from 'react-cookie';
 import { useBoardStore, useLoginUserStore } from 'stores';
 import { fileUploadRequest, patchBoardRequest, postBoardRequest } from 'apis';
@@ -70,6 +70,11 @@ export default function Header() {
   //          Event Handler : 로고 클릭 이벤트 처리 함수          //
   const onLogoClickHandler = () => {
     navigate(MAIN_PATH());
+  };
+
+  //          Event Handler : 통계 클릭 이벤트 처리 함수          //
+  const onStatisticsClickHandler = () => {
+    navigate(STATISTICS_PATH());
   };
 
   //          Component : 검색 버튼 컴포넌트          //
@@ -321,6 +326,12 @@ export default function Header() {
             <div className='icon logo-dark-icon'></div>
           </div>
           <div className='header-logo-text'>{'Practice Board'}</div>
+        </div>
+        <div className="header-middle-box" onClick={onStatisticsClickHandler}>
+          <div className="icon-box">
+            <div className="icon statistics-icon"></div>
+          </div>
+          <div className="header-statistics-text">{'통계'}</div>
         </div>
         <div className="header-right-box">
           {(isAuthPage || isMainPage || isSearchPage || isBoardDetailPage) && <SearchButton />}

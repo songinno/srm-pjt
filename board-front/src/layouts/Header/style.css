@@ -34,6 +34,22 @@
     letter-spacing: -0.4px;
 }
 
+.header-middle-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    cursor: pointer;
+}
+
+.header-statistics-text {
+    color: rgba(0, 0, 0, 1);
+    font-family: 'GimhaegayaR';
+    font-weight: 400;
+    line-height: 140%;
+    letter-spacing: -0.4px;
+}
+
 .header-right-box {
 
     display: flex;

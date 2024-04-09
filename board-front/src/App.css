@@ -210,6 +210,10 @@ textarea {
     background-image: url(assets/images/search-light.png);
 }
 
+.statistics-icon {
+    background-image: url(assets/images/statistics.png);
+}
+
 /* ! Auth 관련 아이콘 */
 .auth-logo-icon {
     background-image: url(assets/images/auth/auth-logo.png);
