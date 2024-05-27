@@ -17,8 +17,7 @@ import java.util.Map;
 public class QuartzStatisticsServiceImpl implements QuartzStatisticsService{
     private final Scheduler scheduler;
     public static final String QUARTZ_JOB_NAME = "QuartzStatisticsJob";
-//    private static final String CRON_EXP = "0 0 0/1 * * ?"; // 매 정각마다
-    private static final String CRON_EXP = "0 0/30 * * * ?"; // 매 30분마다
+    private static final String CRON_EXP = "0 0 0/12 * * ?"; // 12 시간마다
 //    private static final String CRON_EXP = "0/10 * * * * ?"; // 10초마다
 
     @Override
